@@ -26,10 +26,7 @@ public class Phone {
 
     @NotNull
     @Column(name = "isPrivate", nullable = false)
-    private Byte isPrivate;
-
-    @OneToMany(mappedBy = "phone")
-    private Set<Person> people = new LinkedHashSet<>();
+    private boolean isPrivate;
 
     public Phone() {
     }
@@ -58,21 +55,14 @@ public class Phone {
         this.description = description;
     }
 
-    public Byte getIsPrivate() {
+    public boolean getIsPrivate() {
         return isPrivate;
     }
 
-    public void setIsPrivate(Byte isPrivate) {
+    public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
 
-    public Set<Person> getPeople() {
-        return people;
-    }
-
-    public void setPeople(Set<Person> people) {
-        this.people = people;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -87,14 +77,10 @@ public class Phone {
         return Objects.hash(getId());
     }
 
-    @Override
-    public String toString() {
-        return "Phone{" +
-                "id=" + id +
-                ", number='" + number + '\'' +
-                ", description='" + description + '\'' +
-                ", isPrivate=" + isPrivate +
-                ", people=" + people +
-                '}';
+    public Phone(Integer id, String number, String description, Byte isPrivate) {
+        this.id = id;
+        this.number = number;
+        this.description = description;
+        this.isPrivate = isPrivate;
     }
 }
