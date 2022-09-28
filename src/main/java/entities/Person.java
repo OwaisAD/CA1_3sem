@@ -49,6 +49,15 @@ public class Person {
     public Person() {
     }
 
+    public Person(String email, String firstName, String lastName, Phone phone, Address address, Set<Hobby> hobbies) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.address = address;
+        this.hobbies = hobbies;
+    }
+
     public Integer getId() {
         return id;
     }
