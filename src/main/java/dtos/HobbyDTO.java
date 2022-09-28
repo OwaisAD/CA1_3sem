@@ -1,53 +1,34 @@
-package entities;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dtos;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.LinkedHashSet;
-import java.util.Objects;
+import entities.Address;
+import entities.Hobby;
+import entities.Person;
+import entities.Phone;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "HOBBY")
-public class Hobby {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+/**
+ *
+ * @author tha
+ */
+public class HobbyDTO {
     private Integer id;
-
-    @Size(max = 255)
-    @Column(name = "wikiLink")
     private String wikiLink;
-
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "name", nullable = false, length = 45)
     private String name;
-
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "category", nullable = false, length = 45)
     private String category;
-
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "type", nullable = false, length = 45)
     private String type;
-
-    @Size(max = 355)
-    @Column(name = "description", length = 355)
     private String description;
+    private Set<Person> people;
 
-    @ManyToMany
-    @JoinTable(name = "HOBBY_has_PERSON",
-            joinColumns = @JoinColumn(name = "HOBBY_id"),
-            inverseJoinColumns = @JoinColumn(name = "PERSON_id"))
-    private Set<Person> people = new LinkedHashSet<>();
 
-    public Hobby() {
-    }
-
-    public Hobby(String wikiLink, String name, String category, String type, String description, Set<Person> people) {
+    public HobbyDTO(String wikiLink, String name, String category, String type, String description, Set<Person> people) {
         this.wikiLink = wikiLink;
         this.name = name;
         this.category = category;
@@ -56,12 +37,22 @@ public class Hobby {
         this.people = people;
     }
 
-    public Integer getId() {
-        return id;
+    public HobbyDTO(Hobby hobby) {
+        if(hobby.getId() != null) {
+            this.id = hobby.getId();
+        }
+        this.wikiLink = hobby.getWikiLink();
+        this.name = hobby.getName();
+        this.category = hobby.getCategory();
+        this.type = hobby.getType();
+        this.description = hobby.getDescription();
+        this.people = hobby.getPeople();
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public static List<HobbyDTO> getDtos(List<Hobby> hobbyList){
+        List<HobbyDTO> hobbyDTOS = new ArrayList();
+        hobbyList.forEach(hobby->hobbyDTOS.add(new HobbyDTO(hobby)));
+        return hobbyDTOS;
     }
 
     public String getWikiLink() {
@@ -113,21 +104,8 @@ public class Hobby {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Hobby)) return false;
-        Hobby hobby = (Hobby) o;
-        return getId().equals(hobby.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
-
-    @Override
     public String toString() {
-        return "Hobby{" +
+        return "HobbyDTO{" +
                 "id=" + id +
                 ", wikiLink='" + wikiLink + '\'' +
                 ", name='" + name + '\'' +
