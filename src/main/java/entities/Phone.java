@@ -31,6 +31,13 @@ public class Phone {
     public Phone() {
     }
 
+    public Phone(Integer id, String number, String description, boolean isPrivate) {
+        this.id = id;
+        this.number = number;
+        this.description = description;
+        this.isPrivate = isPrivate;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -64,6 +71,7 @@ public class Phone {
     }
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,10 +85,4 @@ public class Phone {
         return Objects.hash(getId());
     }
 
-    public Phone(Integer id, String number, String description, Byte isPrivate) {
-        this.id = id;
-        this.number = number;
-        this.description = description;
-        this.isPrivate = isPrivate;
-    }
 }
