@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 //Todo Remove or change relevant parts before ACTUAL use
 @Path("hobby")
@@ -28,5 +29,11 @@ public class HobbyResource {
         return "{\"msg\":\"Hello hobby\"}";
     }
 
+    @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllHobbies() {
+        return Response.ok().entity(GSON.toJson(FACADE.getAllHobbies())).build();
+    }
 
 }

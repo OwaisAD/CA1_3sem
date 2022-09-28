@@ -9,6 +9,7 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -53,7 +54,17 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
-    
+    public List<PersonDTO> getAllPersons() {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
+            List<Person> persons = query.getResultList();
+            return PersonDTO.getDtos(persons);
+        } finally {
+            em.close();
+        }
+    }
+
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         //PersonFacade fe = getFacadeExample(emf);

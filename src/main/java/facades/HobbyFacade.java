@@ -1,13 +1,17 @@
 package facades;
 
+import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 /**
  *
@@ -50,6 +54,17 @@ public class HobbyFacade {
             em.close();
         }
         return new HobbyDTO(hobby);
+    }
+
+    public List<HobbyDTO> getAllHobbies(){
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h", Hobby.class);
+            List<Hobby> hobbies = query.getResultList();
+            return HobbyDTO.getDtos(hobbies);
+        } finally {
+            em.close();
+        }
     }
 
     
