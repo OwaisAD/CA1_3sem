@@ -112,6 +112,13 @@ public class Hobby {
         this.people = people;
     }
 
+    public void addPerson(Person person) {
+        this.people.add(person);
+        if(!person.getHobbies().contains(this)) { //what is "this"
+            person.addHobbies(this);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

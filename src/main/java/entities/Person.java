@@ -139,4 +139,8 @@ public class Person {
                 ", hobbies=" + hobbies +
                 '}';
     }
+
+    public void addHobbies(Hobby hobby) {
+        this.hobbies.add(hobby);
+    }
 }
