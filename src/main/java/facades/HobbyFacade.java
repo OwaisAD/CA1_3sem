@@ -70,7 +70,8 @@ public class HobbyFacade {
     
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
-        //PersonFacade fe = getFacadeExample(emf);
+        //HobbyFacade hf = new HobbyFacade();
+        //System.out.println(hf.getAllHobbies());
 
     }
 

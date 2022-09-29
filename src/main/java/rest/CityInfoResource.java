@@ -24,14 +24,8 @@ public class CityInfoResource {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public String demo() {
-        return "{\"msg\":\"Hello city\"}";
-    }
 
     @GET
-    @Path("all")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllCities() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllCities())).build();

@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 //Todo Remove or change relevant parts before ACTUAL use
-@Path("hobby")
+@Path("hobbies")
 public class HobbyResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -24,13 +24,6 @@ public class HobbyResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public String demo() {
-        return "{\"msg\":\"Hello hobby\"}";
-    }
-
-    @GET
-    @Path("all")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllHobbies() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllHobbies())).build();

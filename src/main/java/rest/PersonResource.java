@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 //Todo Remove or change relevant parts before ACTUAL use
-@Path("person")
+@Path("persons")
 public class PersonResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -23,13 +23,6 @@ public class PersonResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
             
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public String demo() {
-        return "{\"msg\":\"Hello person\"}";
-    }
-
-    @GET
-    @Path("all")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllPersons() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllPersons())).build();
