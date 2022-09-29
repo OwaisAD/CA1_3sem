@@ -31,7 +31,7 @@ public class Person {
     private String lastName;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "PHONE_id", nullable = false)
     private Phone phone;
 

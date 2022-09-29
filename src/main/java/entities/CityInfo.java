@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo")
 @Table(name = "CITYINFO")
 public class CityInfo {
     @Id
@@ -30,15 +31,14 @@ public class CityInfo {
     public CityInfo() {
     }
 
-    public CityInfo(Integer zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public CityInfo(Integer id, Integer zipCode, String cityName, Set<Address> addresses) {
-        this.id = id;
+    public CityInfo(Integer zipCode, String cityName, Set<Address> addresses) {
         this.zipCode = zipCode;
         this.cityName = cityName;
         this.addresses = addresses;
+    }
+
+    public CityInfo(Integer zipCode) {
+        this.zipCode = zipCode;
     }
 
     public Integer getId() {

@@ -24,7 +24,7 @@ Content-Type: application/json
     "additionalInfo": "2th",
     "isPrivate": false,
     "cityinfo": {
-      "id": 1
+      "id": 18
     }
   }
 }
@@ -45,7 +45,7 @@ Content-Type: application/json
     "additionalInfo": "1th",
     "isPrivate": false,
     "cityinfo": {
-      "id": 1
+      "id": 18
     }
   }
 }

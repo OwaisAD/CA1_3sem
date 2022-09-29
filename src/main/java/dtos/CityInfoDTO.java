@@ -8,6 +8,7 @@ package dtos;
 import entities.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,14 +22,15 @@ public class CityInfoDTO {
     private String cityName;
     private Set<Address> addresses;
 
-    public CityInfoDTO(Integer zipCode, String cityName, Set<Address> addresses) {
+    public CityInfoDTO(Integer zipCode, String cityName) {
         this.zipCode = zipCode;
         this.cityName = cityName;
-        this.addresses = addresses;
     }
 
-    public CityInfoDTO(Integer zipCode) {
+    public CityInfoDTO(Integer id, Integer zipCode, String cityName) {
+        this.id = id;
         this.zipCode = zipCode;
+        this.cityName = cityName;
     }
 
     public CityInfoDTO(CityInfo cityInfo) {
@@ -37,7 +39,16 @@ public class CityInfoDTO {
         }
         this.zipCode = cityInfo.getZipCode();
         this.cityName = cityInfo.getCityName();
-        this.addresses = cityInfo.getAddresses();
+        if(cityInfo.getAddresses() != null) {
+            this.addresses = cityInfo.getAddresses();
+        } else {
+            this.addresses = new LinkedHashSet<>();
+        }
+    }
+
+
+    public CityInfoDTO(Integer zipCode) {
+        this.zipCode = zipCode;
     }
 
     public static List<CityInfoDTO> getDtos(List<CityInfo> cityInfoList){

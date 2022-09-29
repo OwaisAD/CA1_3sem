@@ -1,5 +1,8 @@
 package entities;
 
+import dtos.AddressDTO;
+import facades.AddressFacade;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address")
 @Table(name = "ADDRESS")
 public class Address {
     @Id
@@ -22,7 +26,7 @@ public class Address {
 
     @Size(max = 45)
     @Column(name = "additionalInfo", length = 45)
-    private String additionalInfo;
+    private String additionalInfo = "";
 
     @NotNull
     @Column(name = "isPrivate", nullable = false)
@@ -37,6 +41,13 @@ public class Address {
     private Set<Person> people = new LinkedHashSet<>();
 
     public Address() {
+    }
+
+    public Address(AddressDTO addressDTO) {
+        this.street = addressDTO.getStreet();
+        this.additionalInfo = addressDTO.getAdditionalInfo();
+        this.isPrivate = addressDTO.isPrivate();
+        this.cityinfo = AddressFacade.getCityInfoByZipCode(addressDTO.getZipCode());
     }
 
     public Integer getId() {
@@ -85,6 +96,10 @@ public class Address {
 
     public void setPeople(Set<Person> people) {
         this.people = people;
+    }
+
+    public Integer getCityZip() {
+        return cityinfo.getZipCode();
     }
 
     @Override
