@@ -31,6 +31,10 @@ public class Phone {
     public Phone() {
     }
 
+    public Phone(String number) {
+        this.number = number;
+    }
+
     public Phone(Integer id, String number, String description, boolean isPrivate) {
         this.id = id;
         this.number = number;
@@ -85,4 +89,13 @@ public class Phone {
         return Objects.hash(getId());
     }
 
+    @Override
+    public String toString() {
+        return "Phone{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", description='" + description + '\'' +
+                ", isPrivate=" + isPrivate +
+                '}';
+    }
 }

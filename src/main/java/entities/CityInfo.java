@@ -30,6 +30,17 @@ public class CityInfo {
     public CityInfo() {
     }
 
+    public CityInfo(Integer zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public CityInfo(Integer id, Integer zipCode, String cityName, Set<Address> addresses) {
+        this.id = id;
+        this.zipCode = zipCode;
+        this.cityName = cityName;
+        this.addresses = addresses;
+    }
+
     public Integer getId() {
         return id;
     }

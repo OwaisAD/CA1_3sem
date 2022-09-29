@@ -51,6 +51,28 @@ public class CityInfoFacade {
         }
     }
 
+    public CityInfoDTO getCityById(int id) {
+        EntityManager em = getEntityManager();
+        try {
+            CityInfo city = em.find(CityInfo.class, id);
+            return new CityInfoDTO(city);
+        }finally {
+            em.close();
+        }
+    }
+
+    // method for returning a specific city by its zipcode
+    public CityInfoDTO getCityByZipCode(int zipCode) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c from CityInfo c WHERE c.zipCode= :zipCode", CityInfo.class);
+            query.setParameter("zipCode", zipCode);
+            CityInfo cityInfo = query.getSingleResult();
+            return new CityInfoDTO(cityInfo);
+        }finally {
+            em.close();
+        }
+    }
     
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();

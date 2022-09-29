@@ -1,4 +1,4 @@
-GET http://localhost:8080/devops_starter_war_exploded/api/xxx
+GET http://localhost:8080/ca1/api/cities
 
 ###
 POST http://localhost:8080/devops_starter_war_exploded/api/xxx
@@ -8,3 +8,44 @@ Content-Type: application/json
 {"str1": "First Property", "str2": "Second Property"}
 
 
+###
+POST http://localhost:8080/ca1/api/persons
+Content-Type: application/json
+
+{
+  "email": "owais@mail.com",
+  "firstName": "Owais",
+  "lastName": "Dashti",
+  "phone": {
+    "number": "12345678"
+  },
+  "address": {
+    "street": "Sushi Blv",
+    "additionalInfo": "2th",
+    "isPrivate": false,
+    "cityinfo": {
+      "id": 1
+    }
+  }
+}
+
+###
+POST http://localhost:8080/ca1/api/persons
+Content-Type: application/json
+
+{
+  "email": "daniel@mail.com",
+  "firstName": "Daniel",
+  "lastName": "Drobek",
+  "phone": {
+    "number": "12345678"
+  },
+  "address": {
+    "street": "Sushi Blv",
+    "additionalInfo": "1th",
+    "isPrivate": false,
+    "cityinfo": {
+      "id": 1
+    }
+  }
+}

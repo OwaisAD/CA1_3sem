@@ -27,6 +27,10 @@ public class CityInfoDTO {
         this.addresses = addresses;
     }
 
+    public CityInfoDTO(Integer zipCode) {
+        this.zipCode = zipCode;
+    }
+
     public CityInfoDTO(CityInfo cityInfo) {
         if(cityInfo.getId() != null) {
             this.id = cityInfo.getId();

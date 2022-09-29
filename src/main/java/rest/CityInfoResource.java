@@ -10,12 +10,13 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 //Todo Remove or change relevant parts before ACTUAL use
-@Path("city")
+@Path("cities")
 public class CityInfoResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -30,5 +31,20 @@ public class CityInfoResource {
     public Response getAllCities() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllCities())).build();
     }
+
+    @GET
+    @Path("/id/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getCityById(@PathParam("id") int id) {
+        return Response.ok().entity(GSON.toJson(FACADE.getCityById(id))).build();
+    }
+
+    @GET
+    @Path("{zipcode}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getCityByZipCode(@PathParam("zipcode") int id) {
+        return Response.ok().entity(GSON.toJson(FACADE.getCityByZipCode(id))).build();
+    }
+
 
 }

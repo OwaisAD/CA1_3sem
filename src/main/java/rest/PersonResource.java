@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.PersonDTO;
 import dtos.RenameMeDTO;
 import entities.Person;
 import facades.FacadeExample;
@@ -21,11 +22,24 @@ public class PersonResource {
        
     private static final PersonFacade FACADE =  PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-            
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllPersons() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllPersons())).build();
     }
+
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response createPerson(String person) {
+
+        PersonDTO pd = GSON.fromJson(person, PersonDTO.class);
+        PersonDTO pdNew = FACADE.create(pd);
+        //return GSON.toJson(pdNew);
+
+        return Response.ok().entity(GSON.toJson(pdNew)).build();
+    }
+
 
 }

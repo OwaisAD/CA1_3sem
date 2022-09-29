@@ -26,7 +26,7 @@ public class Address {
 
     @NotNull
     @Column(name = "isPrivate", nullable = false)
-    private Byte isPrivate;
+    private boolean isPrivate;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -63,11 +63,11 @@ public class Address {
         this.additionalInfo = additionalInfo;
     }
 
-    public Byte getIsPrivate() {
+    public boolean getIsPrivate() {
         return isPrivate;
     }
 
-    public void setIsPrivate(Byte isPrivate) {
+    public void setIsPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
 

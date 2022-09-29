@@ -2,7 +2,9 @@ package facades;
 
 import dtos.PersonDTO;
 import dtos.RenameMeDTO;
+import entities.Address;
 import entities.Person;
+import entities.Phone;
 import entities.RenameMe;
 import utils.EMF_Creator;
 
@@ -40,9 +42,11 @@ public class PersonFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
+
+
     public PersonDTO create(PersonDTO pd){
-        Person person = new Person(pd.getEmail(), pd.getFirstName(), pd.getLastName(), pd.getPhone(), pd.getAddress(), pd.getHobbies());
+        Person person = new Person(pd.getEmail(), pd.getFirstName(), pd.getLastName(), pd.getPhone(), pd.getAddress());
+
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -53,6 +57,7 @@ public class PersonFacade {
         }
         return new PersonDTO(person);
     }
+
 
     public List<PersonDTO> getAllPersons() {
         EntityManager em = getEntityManager();
@@ -65,9 +70,14 @@ public class PersonFacade {
         }
     }
 
+    /*public PersonDTO getPersonByPhoneNumber(String phoneNumber) {
+
+    }*/
+
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
-        //PersonFacade fe = getFacadeExample(emf);
+        //PersonFacade pf = getPersonFacade(emf);
+
 
     }
 
