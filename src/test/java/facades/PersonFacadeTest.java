@@ -20,6 +20,8 @@ public class PersonFacadeTest {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
 
+    private static HobbyFacade hobbyFacade;
+
 
     CityInfo c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());
     CityInfo c2 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
@@ -42,6 +44,7 @@ public class PersonFacadeTest {
     public static void setUpClass() {
        emf = EMF_Creator.createEntityManagerFactoryForTest();
        facade = PersonFacade.getPersonFacade(emf);
+       hobbyFacade = HobbyFacade.getHobbyFacade(emf);
 
     }
 
@@ -106,8 +109,11 @@ public class PersonFacadeTest {
     @Test
     public void testAddingAHobbyToAPerson() throws Exception {
         Person person = facade.createPerson(new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1));
-        Person personWithHobby = facade.addHobbyToPerson(person, h1);
-        System.out.println(person);
+        facade.addHobbyToPerson(person, h1);
+        assertEquals(1, person.getHobbies().size());
+
+        // HVORFOR FÅR VI IKKE SAT PERSON IND I PEOPLELIST FRA HOBBY, NÅR VI TILFØJER EN HOBBY TIL EN PERSON
+
     }
 
 

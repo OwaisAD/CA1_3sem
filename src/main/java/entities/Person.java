@@ -7,11 +7,10 @@ import facades.PhoneFacade;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
+@NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
 @Table(name = "PERSON")
 public class Person {
     @Id
@@ -48,7 +47,7 @@ public class Person {
     @JoinTable(name = "HOBBY_has_PERSON",
             joinColumns = @JoinColumn(name = "PERSON_id"),
             inverseJoinColumns = @JoinColumn(name = "HOBBY_id"))
-    private Set<Hobby> hobbies = new LinkedHashSet<>();
+    private List<Hobby> hobbies = new ArrayList<>();
 
     public Person() {
     }
@@ -116,11 +115,11 @@ public class Person {
         this.address = address;
     }
 
-    public Set<Hobby> getHobbies() {
+    public List<Hobby> getHobbies() {
         return hobbies;
     }
 
-    public void setHobbies(Set<Hobby> hobbies) {
+    public void setHobbies(List<Hobby> hobbies) {
         this.hobbies = hobbies;
     }
 

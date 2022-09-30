@@ -1,6 +1,7 @@
 package facades;
 
 import entities.Hobby;
+import entities.Person;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -75,6 +76,28 @@ public class HobbyFacade {
         } finally {
             em.close();
         }
+    }
+
+    public Hobby getHobbyById(int id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Hobby.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public Hobby addPersonToHobby(Person person, Hobby hobby) {
+        EntityManager em = getEntityManager();
+        hobby.getPeople().add(person);
+        try {
+            em.getTransaction().begin();
+            em.merge(hobby);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return hobby;
     }
 
     /*

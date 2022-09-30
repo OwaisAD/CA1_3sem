@@ -93,7 +93,7 @@ public class PersonFacade {
         EntityManager em = getEntityManager();
         try {
             // check if person exists
-            if(person != null) {
+            if(person != null && hobby != null) {
                 em.getTransaction().begin();
                 person.getHobbies().add(hobby);
                 em.merge(person);
@@ -105,6 +105,7 @@ public class PersonFacade {
         }
         return person;
     }
+
 
 
     /*public PersonDTO getPersonByPhoneNumber(String phoneNumber) {
