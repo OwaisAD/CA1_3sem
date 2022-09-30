@@ -25,7 +25,7 @@ public class CityInfoResource {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-
+/*
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllCities() {
@@ -45,6 +45,6 @@ public class CityInfoResource {
     public Response getCityByZipCode(@PathParam("zipcode") int id) {
         return Response.ok().entity(GSON.toJson(FACADE.getCityByZipCode(id))).build();
     }
-
+*/
 
 }

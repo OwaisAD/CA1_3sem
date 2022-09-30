@@ -92,7 +92,6 @@ public class CityInfo {
                 "id=" + id +
                 ", zipCode=" + zipCode +
                 ", cityName='" + cityName + '\'' +
-                ", addresses=" + addresses +
                 '}';
     }
 }

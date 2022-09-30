@@ -1,9 +1,6 @@
 package facades;
 
-import dtos.CityInfoDTO;
-import dtos.HobbyDTO;
 import entities.CityInfo;
-import entities.Hobby;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -39,7 +36,8 @@ public class CityInfoFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
+    /*
+
     public List<CityInfoDTO> getAllCities(){
         EntityManager em = getEntityManager();
         try {
@@ -79,6 +77,6 @@ public class CityInfoFacade {
         CityInfoFacade cif = getCityInfoFacade(emf);
         System.out.println(cif.getAllCities());
 
-    }
+    }*/
 
 }

@@ -1,11 +1,6 @@
 package facades;
 
-import dtos.CityInfoDTO;
-import dtos.HobbyDTO;
-import dtos.PersonDTO;
-import entities.CityInfo;
 import entities.Hobby;
-import entities.Person;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -41,7 +36,8 @@ public class HobbyFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
+
+    /*
     public HobbyDTO create(HobbyDTO hd){
         //Person person = new Person(pd.getEmail(), pd.getFirstName(), pd.getLastName(), pd.getPhone(), pd.getAddress(), pd.getHobbies());
         Hobby hobby = new Hobby(hd.getWikiLink(), hd.getName(), hd.getCategory(), hd.getType(), hd.getDescription(), hd.getPeople());
@@ -77,7 +73,7 @@ public class HobbyFacade {
         }
     }
 
-    
+    */
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         //HobbyFacade hf = new HobbyFacade();

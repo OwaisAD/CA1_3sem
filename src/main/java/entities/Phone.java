@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@NamedQuery(name = "Phone.deleteAllRows", query = "DELETE from Phone")
 @Table(name = "PHONE")
 public class Phone {
     @Id
@@ -37,6 +38,12 @@ public class Phone {
 
     public Phone(Integer id, String number, String description, boolean isPrivate) {
         this.id = id;
+        this.number = number;
+        this.description = description;
+        this.isPrivate = isPrivate;
+    }
+
+    public Phone(String number, String description, boolean isPrivate) {
         this.number = number;
         this.description = description;
         this.isPrivate = isPrivate;

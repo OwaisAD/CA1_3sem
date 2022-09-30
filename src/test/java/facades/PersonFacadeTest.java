@@ -1,15 +1,16 @@
 package facades;
 
 import dtos.AddressDTO;
+import dtos.PersonDTO;
 import entities.Address;
 import entities.CityInfo;
-import entities.RenameMe;
+import entities.Person;
+import entities.Phone;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -17,18 +18,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
-public class AddressFacadeTest {
+public class PersonFacadeTest {
 
     private static EntityManagerFactory emf;
-    private static AddressFacade facade;
+    private static PersonFacade facade;
 
-    public AddressFacadeTest() {
+    public PersonFacadeTest() {
     }
 
     @BeforeAll
     public static void setUpClass() {
        emf = EMF_Creator.createEntityManagerFactoryForTest();
-       facade = AddressFacade.getAddressFacade(emf);
+       facade = PersonFacade.getPersonFacade(emf);
 
     }
 
@@ -46,8 +47,15 @@ public class AddressFacadeTest {
             em.getTransaction().begin();
             em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.persist(new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>()));
             em.persist(new CityInfo(3000, "Helsingør", new LinkedHashSet<>()));
+            em.persist(new CityInfo(2980, "Kokkedal", new LinkedHashSet<>()));
+
+            em.persist(new Phone("12345678", "Telenor", false));
+            em.persist(new Phone("24682468", "CBB", false));
+            em.persist(new Phone("98765432", "Telia", false));
+
 
             em.getTransaction().commit();
         } finally {
@@ -57,9 +65,10 @@ public class AddressFacadeTest {
         EntityManager em2 = emf.createEntityManager();
         try {
             em2.getTransaction().begin();
-            em2.persist(new Address(new AddressDTO("Sushi Blv", "2tv", false, 2800)));
-            em2.persist(new Address(new AddressDTO("Nytorv", "50", false, 3000)));
 
+            em2.persist(new Address(new AddressDTO("Sushi Blv", "2tv", false, 2800)));
+            em2.persist(new Address(new AddressDTO("Kanalvej", "5a", false, 2800)));
+            em2.persist(new Address(new AddressDTO("Redde Allé", "78", false, 2980)));
 
             em2.getTransaction().commit();
         } finally {
@@ -72,35 +81,16 @@ public class AddressFacadeTest {
 //        Remove any data after each test was run
     }
 
-    // TODO: Delete or change this method 
     @Test
-    public void testGettingCityInfoByZipCode() throws Exception {
-        CityInfo cityInfo = AddressFacade.getCityInfoByZipCode(2800);
-        assertEquals("Kongens Lyngby", cityInfo.getCityName());
+    public void testCreatingAPerson() throws Exception {
+        //PersonDTO personDTO = facade.create(new PersonDTO("thomas@mail.dk", "Thomas", "Fritzbøger"));
+        //assertEquals("Thomas", personDTO.getFirstName());
     }
 
-    @Test
-    public void testCreatingAnAddress() throws Exception {
-        AddressDTO addressDTO = facade.create(new AddressDTO("Sushi Blv", "2th", false, 2800));
-        assertEquals("Sushi Blv", addressDTO.getStreet());
-        Address address = new Address(addressDTO);
-        assertEquals("Kongens Lyngby", address.getCityInfo().getCityName());
-    }
 
-    @Test
-    public void testGettingAllAddressesByZipCode() throws Exception {
-        List<Address> addressList = facade.getAllAddressesByZipCode(2800);
-        assertEquals(1, addressList.size());
 
-        Address address = addressList.get(0);
-        assertEquals("2tv", address.getAdditionalInfo());
-    }
 
-    @Test
-    public void testGettingAddressById() throws Exception {
-        Address address = AddressFacade.getAddressById(2);
-        assertEquals("Helsingør", address.getCityInfo().getCityName());
-        assertEquals("Nytorv", address.getStreet());
-    }
+
+
 
 }

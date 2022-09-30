@@ -2,6 +2,8 @@ package entities;
 
 import dtos.AddressDTO;
 import facades.AddressFacade;
+import facades.PersonFacade;
+import utils.EMF_Creator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -42,6 +44,7 @@ public class Address {
 
     public Address() {
     }
+
 
     public Address(AddressDTO addressDTO) {
         this.street = addressDTO.getStreet();

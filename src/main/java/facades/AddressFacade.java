@@ -1,11 +1,8 @@
 package facades;
 
 import dtos.AddressDTO;
-import dtos.CityInfoDTO;
-import dtos.PersonDTO;
 import entities.Address;
 import entities.CityInfo;
-import entities.Person;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -67,17 +64,39 @@ public class AddressFacade {
         } finally {
             em.close();
         }
-
     }
 
+    public List<Address> getAllAddressesByZipCode(int zipCode) {
+        int cityInfoId = getCityInfoByZipCode(zipCode).getId();
 
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Address> query = em.createQuery("select a from Address a join a.cityinfo ac where ac.id= :cityinfoid", Address.class);
+            query.setParameter("cityinfoid", cityInfoId);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public static Address getAddressById(int addressId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Address address = em.find(Address.class, addressId);
+            return address;
+        } finally {
+            em.close();
+        }
+    }
 
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         //PersonFacade pf = getPersonFacade(emf);
         AddressFacade addressFacade = getAddressFacade(emf);
-        System.out.println(addressFacade.getCityInfoByZipCode(2800));
+        //System.out.println(addressFacade.getCityInfoByZipCode(2800));
+        System.out.println(getAddressById(1));
 
     }
+
 
 }

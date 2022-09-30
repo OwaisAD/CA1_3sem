@@ -1,5 +1,9 @@
 package entities;
 
+import dtos.PersonDTO;
+import facades.AddressFacade;
+import facades.PhoneFacade;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -49,12 +53,19 @@ public class Person {
     public Person() {
     }
 
-    public Person(String email, String firstName, String lastName, Phone phone, Address address) {
+    public Person(String email, String firstName, String lastName, String phoneNumber, int addressId) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
-        this.address = address;
+        this.phone = PhoneFacade.getPhoneByPhoneNumber(phoneNumber);
+        this.address = AddressFacade.getAddressById(addressId);
+    }
+
+    public Person(PersonDTO personDTO) {
+        this.id = personDTO.getId();
+        this.email = personDTO.getEmail();
+        this.firstName = personDTO.getFirstName();
+        this.lastName = personDTO.getLastName();
     }
 
     public Integer getId() {
