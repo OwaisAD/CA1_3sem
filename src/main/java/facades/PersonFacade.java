@@ -41,7 +41,7 @@ public class PersonFacade {
     }
 
 
-    public PersonDTO create(PersonDTO pd){
+    /*public PersonDTO create(PersonDTO pd){
         Person person = new Person(pd);
 
         EntityManager em = getEntityManager();
@@ -53,8 +53,20 @@ public class PersonFacade {
             em.close();
         }
         return new PersonDTO(person);
-    }
+    }*/
 
+    public Person createPerson(Person person) {
+
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return person;
+    }
 
     public List<PersonDTO> getAllPersons() {
         EntityManager em = getEntityManager();

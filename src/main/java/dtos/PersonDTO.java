@@ -39,6 +39,7 @@ public class PersonDTO implements Serializable {
         this.lastName = lastName;
     }
 
+
     public PersonDTO(Person person) {
         if(person.getId() != null) {
             this.id = person.getId();

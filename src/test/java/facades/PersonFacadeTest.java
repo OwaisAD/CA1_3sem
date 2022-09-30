@@ -83,8 +83,9 @@ public class PersonFacadeTest {
 
     @Test
     public void testCreatingAPerson() throws Exception {
-        //PersonDTO personDTO = facade.create(new PersonDTO("thomas@mail.dk", "Thomas", "Fritzbøger"));
-        //assertEquals("Thomas", personDTO.getFirstName());
+        Person person = facade.createPerson(new Person("thomas@mail.dk", "Thomas", "Fritzbøger", "12345678", 1));
+        assertEquals("Thomas", person.getFirstName());
+        assertEquals("Sushi Blv", person.getAddress().getStreet());
     }
 
 
