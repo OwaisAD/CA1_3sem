@@ -50,7 +50,7 @@ public class Address {
         this.street = addressDTO.getStreet();
         this.additionalInfo = addressDTO.getAdditionalInfo();
         this.isPrivate = addressDTO.isPrivate();
-        this.cityinfo = AddressFacade.getCityInfoByZipCode(addressDTO.getZipCode());
+        this.cityinfo = addressDTO.getCityInfo();
     }
 
     public Integer getId() {

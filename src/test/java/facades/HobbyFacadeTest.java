@@ -1,33 +1,34 @@
 package facades;
 
-import dtos.AddressDTO;
-import entities.Address;
-import entities.CityInfo;
+import entities.Hobby;
 import entities.Phone;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
-public class PhoneFacadeTest {
+public class HobbyFacadeTest {
 
     private static EntityManagerFactory emf;
-    private static PhoneFacade facade;
+    private static HobbyFacade facade;
 
-    public PhoneFacadeTest() {
+    Hobby h1 = new Hobby("https://en.wikipedia.org/wiki/3D_printing", "3D-udskrivning", "Generel", "Indendørs", "Flot hobby bla");
+
+    Hobby h2 = new Hobby("https://en.wikipedia.org/wiki/Acrobatics", "Akrobatik", "Generel", "Indendørs", "Fed hobby");
+
+
+    public HobbyFacadeTest() {
     }
 
     @BeforeAll
     public static void setUpClass() {
        emf = EMF_Creator.createEntityManagerFactoryForTest();
-       facade = PhoneFacade.getPhoneFacade(emf);
+       facade = HobbyFacade.getHobbyFacade(emf);
 
     }
 
@@ -43,10 +44,10 @@ public class PhoneFacadeTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.persist(new Phone("12345678", "Telenor", false));
-            em.persist(new Phone("24682468", "CBB", false));
-            em.persist(new Phone("98765432", "Telia", false));
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+
+            em.persist(h1);
+            em.persist(h2);
 
             em.getTransaction().commit();
         } finally {
@@ -62,16 +63,11 @@ public class PhoneFacadeTest {
 
     // TODO: Delete or change this method 
     @Test
-    public void testCreatingAPhone() throws Exception {
-        Phone phone = facade.createPhone(new Phone("11111111", "Telmore", false));
-        assertEquals(4, facade.getAllPhones().size());
+    public void testCreatingNewHobby() throws Exception {
+        //INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Bagning','','Generel','Indendørs');
+        Hobby hobby = facade.createHobby(new Hobby("https://en.wikipedia.org/wiki/Baking", "Bagning", "Generel", "Indendørs", "fedtede fingre"));
+        assertEquals(3, facade.getAllHobbies().size());
     }
-
-    /*@Test
-    public void testGettingAPhoneByNumber() throws Exception {
-        Phone phone = facade.getPhoneByPhoneNumber("12345678");
-        assertEquals("Telenor", phone.getDescription());
-    }*/
 
 
 

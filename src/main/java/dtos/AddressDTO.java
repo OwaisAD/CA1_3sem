@@ -23,14 +23,14 @@ public class AddressDTO {
     private String street;
     private String additionalInfo = "";
     private boolean isPrivate;
-    private Integer zipCode;
+    private CityInfo cityInfo;
 
 
-    public AddressDTO(String street, String additionalInfo, boolean isPrivate, Integer zipCode) {
+    public AddressDTO(String street, String additionalInfo, boolean isPrivate, CityInfo cityInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;
         this.isPrivate = isPrivate;
-        this.zipCode = zipCode;
+        this.cityInfo = cityInfo;
     }
 
     public AddressDTO(Address address) {
@@ -40,7 +40,7 @@ public class AddressDTO {
         this.street = address.getStreet();
         this.additionalInfo = address.getAdditionalInfo();
         this.isPrivate = address.getIsPrivate();
-        this.zipCode = address.getCityZip();
+        this.cityInfo = address.getCityInfo();
     }
 
 
@@ -76,14 +76,13 @@ public class AddressDTO {
         isPrivate = aPrivate;
     }
 
-    public Integer getZipCode() {
-        return zipCode;
+    public CityInfo getCityInfo() {
+        return cityInfo;
     }
 
-    public void setZipCode(Integer zipCode) {
-        this.zipCode = zipCode;
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
     }
-
 
     @Override
     public String toString() {
@@ -92,7 +91,7 @@ public class AddressDTO {
                 ", street='" + street + '\'' +
                 ", additionalInfo='" + additionalInfo + '\'' +
                 ", isPrivate=" + isPrivate +
-                ", cityInfoId=" + zipCode +
+                ", CityInfo=" + cityInfo +
                 '}';
     }
 }

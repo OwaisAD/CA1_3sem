@@ -3,6 +3,7 @@ package facades;
 import dtos.AddressDTO;
 import entities.Address;
 import entities.CityInfo;
+import entities.Phone;
 import entities.RenameMe;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -21,6 +22,13 @@ public class AddressFacadeTest {
 
     private static EntityManagerFactory emf;
     private static AddressFacade facade;
+
+    CityInfo c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());
+    CityInfo c2 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
+
+    Address a1 = new Address(new AddressDTO("Sushi Blv", "2tv", false, c2));
+
+    Address a2 = new Address(new AddressDTO("Kanalvej", "5a", false, c1));
 
     public AddressFacadeTest() {
     }
@@ -44,10 +52,10 @@ public class AddressFacadeTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.persist(new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>()));
-            em.persist(new CityInfo(3000, "Helsingør", new LinkedHashSet<>()));
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.persist(c1);
+            em.persist(c2);
 
             em.getTransaction().commit();
         } finally {
@@ -57,8 +65,8 @@ public class AddressFacadeTest {
         EntityManager em2 = emf.createEntityManager();
         try {
             em2.getTransaction().begin();
-            em2.persist(new Address(new AddressDTO("Sushi Blv", "2tv", false, 2800)));
-            em2.persist(new Address(new AddressDTO("Nytorv", "50", false, 3000)));
+            em2.persist(a1);
+            em2.persist(a2);
 
 
             em2.getTransaction().commit();
@@ -81,7 +89,7 @@ public class AddressFacadeTest {
 
     @Test
     public void testCreatingAnAddress() throws Exception {
-        AddressDTO addressDTO = facade.create(new AddressDTO("Sushi Blv", "2th", false, 2800));
+        AddressDTO addressDTO = facade.create(new AddressDTO("Sushi Blv", "2th", false, c1));
         assertEquals("Sushi Blv", addressDTO.getStreet());
         Address address = new Address(addressDTO);
         assertEquals("Kongens Lyngby", address.getCityInfo().getCityName());
@@ -93,14 +101,14 @@ public class AddressFacadeTest {
         assertEquals(1, addressList.size());
 
         Address address = addressList.get(0);
-        assertEquals("2tv", address.getAdditionalInfo());
+        assertEquals("5a", address.getAdditionalInfo());
     }
 
     @Test
     public void testGettingAddressById() throws Exception {
-        Address address = AddressFacade.getAddressById(2);
+        Address address = AddressFacade.getAddressById(c2.getId());
         assertEquals("Helsingør", address.getCityInfo().getCityName());
-        assertEquals("Nytorv", address.getStreet());
+        assertEquals("Sushi Blv", address.getStreet());
     }
 
 }

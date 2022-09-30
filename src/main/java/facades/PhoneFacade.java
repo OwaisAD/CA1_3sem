@@ -59,11 +59,11 @@ public class PhoneFacade {
         }
     }
 
-    public static Phone getPhoneByPhoneNumber(String number) {
+    public static Phone getPhoneByPhoneNumber(Phone phone) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Phone> query = em.createQuery("SELECT p FROM Phone p WHERE p.number = :phoneNumber", Phone.class);
-            query.setParameter("phoneNumber", number);
+            query.setParameter("phoneNumber", phone.getNumber());
             List<Phone> phoneList = query.getResultList();
             return phoneList.get(0);
         } finally {

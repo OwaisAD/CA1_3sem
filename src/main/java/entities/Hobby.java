@@ -3,11 +3,10 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
+@NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
 @Table(name = "HOBBY")
 public class Hobby {
     @Id
@@ -42,18 +41,17 @@ public class Hobby {
     @JoinTable(name = "HOBBY_has_PERSON",
             joinColumns = @JoinColumn(name = "HOBBY_id"),
             inverseJoinColumns = @JoinColumn(name = "PERSON_id"))
-    private Set<Person> people = new LinkedHashSet<>();
+    private List<Person> people = new ArrayList<>();
 
     public Hobby() {
     }
 
-    public Hobby(String wikiLink, String name, String category, String type, String description, Set<Person> people) {
+    public Hobby(String wikiLink, String name, String category, String type, String description) {
         this.wikiLink = wikiLink;
         this.name = name;
         this.category = category;
         this.type = type;
         this.description = description;
-        this.people = people;
     }
 
     public Integer getId() {
@@ -104,11 +102,11 @@ public class Hobby {
         this.description = description;
     }
 
-    public Set<Person> getPeople() {
+    public List<Person> getPeople() {
         return people;
     }
 
-    public void setPeople(Set<Person> people) {
+    public void setPeople(List<Person> people) {
         this.people = people;
     }
 

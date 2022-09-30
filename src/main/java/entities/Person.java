@@ -53,12 +53,12 @@ public class Person {
     public Person() {
     }
 
-    public Person(String email, String firstName, String lastName, String phoneNumber, int addressId) {
+    public Person(String email, String firstName, String lastName, Phone phone, Address address) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = PhoneFacade.getPhoneByPhoneNumber(phoneNumber);
-        this.address = AddressFacade.getAddressById(addressId);
+        this.phone = phone;
+        this.address = address;
     }
 
     public Person(PersonDTO personDTO) {

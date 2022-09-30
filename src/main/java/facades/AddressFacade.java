@@ -79,11 +79,11 @@ public class AddressFacade {
         }
     }
 
-    public static Address getAddressById(int addressId) {
+    public static Address getAddressById(int id) {
         EntityManager em = emf.createEntityManager();
         try {
-            Address address = em.find(Address.class, addressId);
-            return address;
+            Address addressFound = em.find(Address.class, id);
+            return addressFound;
         } finally {
             em.close();
         }
@@ -94,7 +94,7 @@ public class AddressFacade {
         //PersonFacade pf = getPersonFacade(emf);
         AddressFacade addressFacade = getAddressFacade(emf);
         //System.out.println(addressFacade.getCityInfoByZipCode(2800));
-        System.out.println(getAddressById(1));
+        //System.out.println(getAddressById(1));
 
     }
 

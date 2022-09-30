@@ -37,8 +37,8 @@ public class HobbyFacade {
         return emf.createEntityManager();
     }
 
-    /*
-    public HobbyDTO create(HobbyDTO hd){
+
+    /*public HobbyDTO create(HobbyDTO hd){
         //Person person = new Person(pd.getEmail(), pd.getFirstName(), pd.getLastName(), pd.getPhone(), pd.getAddress(), pd.getHobbies());
         Hobby hobby = new Hobby(hd.getWikiLink(), hd.getName(), hd.getCategory(), hd.getType(), hd.getDescription(), hd.getPeople());
         EntityManager em = getEntityManager();
@@ -50,19 +50,34 @@ public class HobbyFacade {
             em.close();
         }
         return new HobbyDTO(hobby);
+    }*/
+
+    public Hobby createHobby(Hobby hobby) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(hobby);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return hobby;
     }
 
-    public List<HobbyDTO> getAllHobbies(){
+
+
+    public List<Hobby> getAllHobbies(){
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h", Hobby.class);
             List<Hobby> hobbies = query.getResultList();
-            return HobbyDTO.getDtos(hobbies);
+            return hobbies;
         } finally {
             em.close();
         }
     }
 
+    /*
     public HobbyDTO getHobbyById(int id) {
         EntityManager em = getEntityManager();
         try {

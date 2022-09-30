@@ -2,6 +2,7 @@ package facades;
 
 import dtos.PersonDTO;
 import entities.CityInfo;
+import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 import utils.EMF_Creator;
@@ -77,6 +78,32 @@ public class PersonFacade {
         } finally {
             em.close();
         }
+    }
+
+    public Person getPersonById(int id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Person.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public Person addHobbyToPerson(Person person, Hobby hobby) {
+        EntityManager em = getEntityManager();
+        try {
+            // check if person exists
+            if(person != null) {
+                em.getTransaction().begin();
+                person.getHobbies().add(hobby);
+                em.merge(person);
+                em.getTransaction().commit();
+            }
+
+        } finally {
+            em.close();
+        }
+        return person;
     }
 
 
