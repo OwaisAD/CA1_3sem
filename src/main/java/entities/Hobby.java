@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.HobbyDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -52,6 +54,14 @@ public class Hobby {
         this.category = category;
         this.type = type;
         this.description = description;
+    }
+
+    public Hobby(HobbyDTO hobbyDTO) {
+        this.wikiLink = hobbyDTO.getWikiLink();
+        this.name = hobbyDTO.getName();
+        this.category = hobbyDTO.getCategory();
+        this.type = hobbyDTO.getType();
+        this.description = hobbyDTO.getDescription();
     }
 
     public Integer getId() {

@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.CityInfoDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,8 +39,19 @@ public class CityInfo {
         this.addresses = addresses;
     }
 
+    public CityInfo(Integer zipCode, String cityName) {
+        this.zipCode = zipCode;
+        this.cityName = cityName;
+    }
+
     public CityInfo(Integer zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public CityInfo(CityInfoDTO cityInfoDTO) {
+        this.id = cityInfoDTO.getId();
+        this.zipCode = cityInfoDTO.getZipCode();
+        this.cityName = cityInfoDTO.getCityName();
     }
 
     public Integer getId() {

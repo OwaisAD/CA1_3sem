@@ -25,19 +25,13 @@ public class CityInfoResource {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-/*
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllCities() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllCities())).build();
     }
 
-    @GET
-    @Path("/id/{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response getCityById(@PathParam("id") int id) {
-        return Response.ok().entity(GSON.toJson(FACADE.getCityById(id))).build();
-    }
 
     @GET
     @Path("{zipcode}")
@@ -45,6 +39,12 @@ public class CityInfoResource {
     public Response getCityByZipCode(@PathParam("zipcode") int id) {
         return Response.ok().entity(GSON.toJson(FACADE.getCityByZipCode(id))).build();
     }
-*/
+
+    @GET
+    @Path("/id/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getCityById(@PathParam("id") int id) {
+        return Response.ok().entity(GSON.toJson(FACADE.getCityInfoById(id))).build();
+    }
 
 }

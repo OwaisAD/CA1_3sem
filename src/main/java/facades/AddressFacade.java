@@ -3,6 +3,7 @@ package facades;
 import dtos.AddressDTO;
 import entities.Address;
 import entities.CityInfo;
+import dtos.CityInfoDTO;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -54,36 +55,37 @@ public class AddressFacade {
         return new AddressDTO(address);
     }
 
-    public static CityInfo getCityInfoByZipCode(int zipCode) {
+    public CityInfoDTO getCityInfoByZipCode(int zipCode) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<CityInfo> query = em.createQuery("SELECT ci FROM CityInfo ci WHERE ci.zipCode = :zip", CityInfo.class);
             query.setParameter("zip", zipCode);
-            List<CityInfo> cityList = query.getResultList();
-            return cityList.get(0);
+            CityInfo cityInfo = query.getResultList().get(0);
+            return new CityInfoDTO(cityInfo);
         } finally {
             em.close();
         }
     }
 
-    public List<Address> getAllAddressesByZipCode(int zipCode) {
+    public List<AddressDTO> getAllAddressesByZipCode(int zipCode) {
         int cityInfoId = getCityInfoByZipCode(zipCode).getId();
 
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Address> query = em.createQuery("select a from Address a join a.cityinfo ac where ac.id= :cityinfoid", Address.class);
             query.setParameter("cityinfoid", cityInfoId);
-            return query.getResultList();
+            List<Address> addressList = query.getResultList();
+            return AddressDTO.getDTOs(addressList);
         } finally {
             em.close();
         }
     }
 
-    public static Address getAddressById(int id) {
+    public AddressDTO getAddressById(int id) {
         EntityManager em = emf.createEntityManager();
         try {
             Address addressFound = em.find(Address.class, id);
-            return addressFound;
+            return new AddressDTO(addressFound);
         } finally {
             em.close();
         }

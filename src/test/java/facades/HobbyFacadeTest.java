@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.AddressDTO;
+import dtos.HobbyDTO;
 import entities.*;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -99,9 +101,20 @@ public class HobbyFacadeTest {
     // TODO: Delete or change this method 
     @Test
     public void testCreatingNewHobby() throws Exception {
-        //INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Bagning','','Generel','Indendørs');
-        Hobby hobby = facade.createHobby(new Hobby("https://en.wikipedia.org/wiki/Baking", "Bagning", "Generel", "Indendørs", "fedtede fingre"));
+        HobbyDTO hobby = facade.createHobby(new HobbyDTO("https://en.wikipedia.org/wiki/Baking", "Bagning", "Generel", "Indendørs", "Fedtede fingre"));
         assertEquals(3, facade.getAllHobbies().size());
+    }
+
+    @Test
+    public void testGettingAllHobbies() throws Exception {
+        List<HobbyDTO> hobbyList = facade.getAllHobbies();
+        assertEquals(2, hobbyList.size());
+    }
+
+    @Test
+    public void testGettingHobbyById() throws Exception {
+        HobbyDTO hobby = facade.getHobbyById(1);
+        assertEquals("Akrobatik", hobby.getName());
     }
 
     @Test

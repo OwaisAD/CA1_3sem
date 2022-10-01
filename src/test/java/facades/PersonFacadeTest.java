@@ -111,7 +111,6 @@ public class PersonFacadeTest {
         Person person = facade.createPerson(new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1));
         facade.addHobbyToPerson(person, h1);
         assertEquals(1, person.getHobbies().size());
-
         // HVORFOR FÅR VI IKKE SAT PERSON IND I PEOPLELIST FRA HOBBY, NÅR VI TILFØJER EN HOBBY TIL EN PERSON
 
     }

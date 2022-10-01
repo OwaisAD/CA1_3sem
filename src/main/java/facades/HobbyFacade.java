@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.HobbyDTO;
 import entities.Hobby;
 import entities.Person;
 import utils.EMF_Creator;
@@ -39,9 +40,8 @@ public class HobbyFacade {
     }
 
 
-    /*public HobbyDTO create(HobbyDTO hd){
-        //Person person = new Person(pd.getEmail(), pd.getFirstName(), pd.getLastName(), pd.getPhone(), pd.getAddress(), pd.getHobbies());
-        Hobby hobby = new Hobby(hd.getWikiLink(), hd.getName(), hd.getCategory(), hd.getType(), hd.getDescription(), hd.getPeople());
+    public HobbyDTO createHobby(HobbyDTO hobbyDTO) {
+        Hobby hobby = new Hobby(hobbyDTO);
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -51,37 +51,24 @@ public class HobbyFacade {
             em.close();
         }
         return new HobbyDTO(hobby);
-    }*/
-
-    public Hobby createHobby(Hobby hobby) {
-        EntityManager em = getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(hobby);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return hobby;
     }
 
-
-
-    public List<Hobby> getAllHobbies(){
+    public List<HobbyDTO> getAllHobbies(){
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h", Hobby.class);
             List<Hobby> hobbies = query.getResultList();
-            return hobbies;
+            return HobbyDTO.getDTOs(hobbies);
         } finally {
             em.close();
         }
     }
 
-    public Hobby getHobbyById(int id) {
+    public HobbyDTO getHobbyById(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Hobby.class, id);
+            Hobby hobby = em.find(Hobby.class, id);
+            return new HobbyDTO(hobby);
         } finally {
             em.close();
         }
@@ -100,18 +87,7 @@ public class HobbyFacade {
         return hobby;
     }
 
-    /*
-    public HobbyDTO getHobbyById(int id) {
-        EntityManager em = getEntityManager();
-        try {
-            Hobby hobby = em.find(Hobby.class, id);
-            return new HobbyDTO(hobby);
-        }finally {
-            em.close();
-        }
-    }
 
-    */
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         //HobbyFacade hf = new HobbyFacade();

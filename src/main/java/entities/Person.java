@@ -34,16 +34,16 @@ public class Person {
     private String lastName;
 
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "PHONE_id", nullable = false)
     private Phone phone;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ADDRESS_id", nullable = false)
     private Address address;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "HOBBY_has_PERSON",
             joinColumns = @JoinColumn(name = "PERSON_id"),
             inverseJoinColumns = @JoinColumn(name = "HOBBY_id"))

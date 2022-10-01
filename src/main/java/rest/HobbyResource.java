@@ -24,13 +24,14 @@ public class HobbyResource {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    /*
+
     // when /api/hobbies is hit, the following endpoint executes
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllHobbies() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllHobbies())).build();
     }
+
 
     // when we want one specific hobby, the following endpoint executes
     @GET
@@ -39,6 +40,7 @@ public class HobbyResource {
     public Response getHobbyById(@PathParam("id") int id) {
         return Response.ok().entity(GSON.toJson(FACADE.getHobbyById(id))).build();
     }
-*/
+
+
 
 }

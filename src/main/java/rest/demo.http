@@ -17,35 +17,25 @@ Content-Type: application/json
   "firstName": "Owais",
   "lastName": "Dashti",
   "phone": {
-    "number": "12345678"
+    "number": "50505050",
+    "description": "Telmore",
+    "isPrivate": false
   },
   "address": {
     "street": "Sushi Blv",
     "additionalInfo": "2th",
     "isPrivate": false,
     "cityinfo": {
-      "id": 18
+      "zipCode": 3000
     }
   }
 }
 
+
 ###
-POST http://localhost:8080/ca1/api/persons
+POST http://localhost:8080/ca1/api/persons/3/hobby
 Content-Type: application/json
 
 {
-  "email": "daniel@mail.com",
-  "firstName": "Daniel",
-  "lastName": "Drobek",
-  "phone": {
-    "number": "12345678"
-  },
-  "address": {
-    "street": "Sushi Blv",
-    "additionalInfo": "1th",
-    "isPrivate": false,
-    "cityinfo": {
-      "id": 18
-    }
-  }
+  "id": 8
 }

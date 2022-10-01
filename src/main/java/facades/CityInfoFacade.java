@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.CityInfoDTO;
 import entities.CityInfo;
 import utils.EMF_Creator;
 
@@ -36,20 +37,22 @@ public class CityInfoFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    /*
+
 
     public List<CityInfoDTO> getAllCities(){
         EntityManager em = getEntityManager();
         try {
             TypedQuery<CityInfo> query = em.createQuery("SELECT ci FROM CityInfo ci", CityInfo.class);
             List<CityInfo> cities = query.getResultList();
-            return CityInfoDTO.getDtos(cities);
+            return CityInfoDTO.getDTOs(cities);
         } finally {
             em.close();
         }
     }
 
-    public CityInfoDTO getCityById(int id) {
+
+
+    public CityInfoDTO getCityInfoById(int id) {
         EntityManager em = getEntityManager();
         try {
             CityInfo city = em.find(CityInfo.class, id);
@@ -58,6 +61,8 @@ public class CityInfoFacade {
             em.close();
         }
     }
+
+
 
     // method for returning a specific city by its zipcode
     public CityInfoDTO getCityByZipCode(int zipCode) {
@@ -71,7 +76,8 @@ public class CityInfoFacade {
             em.close();
         }
     }
-    
+
+    /*
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         CityInfoFacade cif = getCityInfoFacade(emf);
