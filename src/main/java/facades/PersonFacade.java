@@ -81,11 +81,11 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO getPersonById(int id) {
+    public Person getPersonById(int id) {
         EntityManager em = getEntityManager();
         try {
             Person person = em.find(Person.class, id);
-            return new PersonDTO(person);
+            return person;
         } finally {
             em.close();
         }
@@ -104,12 +104,8 @@ public class PersonFacade {
     }
 
     public Person addHobbyToPerson(Person person, Hobby hobby) {
-        PersonDTO personDTO = new PersonDTO(person);
-        HobbyDTO hobbyDTO = new HobbyDTO(hobby);
-        personDTO.addToHobbyInnerDTO(hobbyDTO);
 
-        Person p = new Person(personDTO);
-        System.out.println(p);
+        person.addHobbies(hobby);
 
         EntityManager em = getEntityManager();
         try {
@@ -117,7 +113,7 @@ public class PersonFacade {
 
                 em.getTransaction().begin();
 
-                em.merge(p); //this needs to be fixed from the stackoverflow error
+                em.merge(person); //this needs to be fixed from the stackoverflow error
 
                 em.getTransaction().commit();
 

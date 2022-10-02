@@ -64,11 +64,11 @@ public class HobbyFacade {
         }
     }
 
-    public HobbyDTO getHobbyById(int id) {
+    public Hobby getHobbyById(int id) {
         EntityManager em = getEntityManager();
         try {
             Hobby hobby = em.find(Hobby.class, id);
-            return new HobbyDTO(hobby);
+            return hobby;
         } finally {
             em.close();
         }

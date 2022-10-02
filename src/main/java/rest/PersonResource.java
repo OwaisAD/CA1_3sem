@@ -53,52 +53,52 @@ public class PersonResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response createPerson(String person) {
 
-        Person p = GSON.fromJson(person, Person.class);
-        System.out.println(p);
+        // Make person from request body
+        Person personFromJson = GSON.fromJson(person, Person.class);
+        System.out.println(personFromJson);
 
         // get cityInfo
-        CityInfoDTO cityInfoDTO = cityInfoFacade.getCityByZipCode(p.getAddress().getCityInfo().getZipCode());
+        CityInfoDTO cityInfoDTO = cityInfoFacade.getCityByZipCode(personFromJson.getAddress().getCityInfo().getZipCode());
         System.out.println(cityInfoDTO);
-        p.getAddress().setCityInfo(new CityInfo(cityInfoDTO));
+        personFromJson.getAddress().setCityInfo(new CityInfo(cityInfoDTO));
 
 
         // create address
-        AddressDTO a = addressFacade.create(new AddressDTO(p.getAddress()));
+        AddressDTO a = addressFacade.create(new AddressDTO(personFromJson.getAddress()));
         System.out.println(a);
-        p.setAddress(new Address(a));
+        personFromJson.setAddress(new Address(a));
 
         // create phone
-        Phone phone = phoneFacade.createPhone(p.getPhone());
+        Phone phone = phoneFacade.createPhone(personFromJson.getPhone());
         System.out.println(phone);
-        p.setPhone(phone);
+        personFromJson.setPhone(phone);
 
 
         // create the person
-        Person pNew = FACADE.createPerson(p);
+        Person pNew = FACADE.createPerson(personFromJson);
 
         return Response.ok().entity(GSON.toJson(pNew)).build();
     }
 
-    @POST
-    @Path("{id}/hobby")
+    @GET
+    @Path("{personId}/addhobby/{hobbyId}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response addHobbyToPerson(@PathParam("id") int id, String hobbyId) {
+    public Response addHobbyToPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) {
 
         // Find the hobby
-        Hobby hobby = GSON.fromJson(hobbyId, Hobby.class);
-        HobbyDTO foundHobby = hobbyFacade.getHobbyById(hobby.getId());
+        Hobby foundHobby = hobbyFacade.getHobbyById(hobbyId);
 
         System.out.println("FOUND HOBBY");
         System.out.println(foundHobby);
 
         // Find the person
-        PersonDTO personDTO = FACADE.getPersonById(id);
+        Person person = FACADE.getPersonById(personId);
         System.out.println("FOUND PERSON");
-        System.out.println(personDTO);
+        System.out.println(person);
 
         // Add hobby to person
-        return Response.ok().entity(GSON.toJson(FACADE.addHobbyToPerson(new Person(personDTO),new Hobby(foundHobby)))).build();
+        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(person, foundHobby)))).build();
     }
 
     @GET
@@ -127,10 +127,10 @@ public class PersonResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String getAmountOfPersonsGivenAHobby(@PathParam("hobbyId") int hobbyId) {
 
-        HobbyDTO hobbyDTO = hobbyFacade.getHobbyById(hobbyId);
+        Hobby hobby = hobbyFacade.getHobbyById(hobbyId);
         Long peopleAmount = FACADE.getAmountOfPersonsGivenAHobby(hobbyId);
 
-        return "{\"hobby\":\"" + hobbyDTO.getName() + "\"" + "," + "\"personcount\":\""+ peopleAmount +"\"" + "}";
+        return "{\"hobby\":\"" + hobby.getName() + "\"" + "," + "\"personcount\":\""+ peopleAmount +"\"" + "}";
     }
 
 }

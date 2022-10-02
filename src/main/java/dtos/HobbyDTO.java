@@ -1,6 +1,5 @@
 package dtos;
 
-import entities.Address;
 import entities.Hobby;
 
 import javax.validation.constraints.NotNull;
@@ -27,7 +26,7 @@ public class HobbyDTO implements Serializable {
     private final String type;
     @Size(max = 355)
     private final String description;
-    private final List<PersonDto> people = new ArrayList<>();
+    private final List<PersonInnerDTO> people = new ArrayList<>();
 
     public HobbyDTO(Integer id, String wikiLink, String name, String category, String type, String description) {
         this.id = id;
@@ -89,7 +88,7 @@ public class HobbyDTO implements Serializable {
         return description;
     }
 
-    public List<PersonDto> getPeople() {
+    public List<PersonInnerDTO> getPeople() {
         return people;
     }
 
@@ -108,7 +107,7 @@ public class HobbyDTO implements Serializable {
     /**
      * A DTO for the {@link entities.Person} entity
      */
-    public static class PersonDto implements Serializable {
+    public static class PersonInnerDTO implements Serializable {
         private final Integer id;
         @Size(max = 45)
         @NotNull
@@ -120,7 +119,7 @@ public class HobbyDTO implements Serializable {
         @NotNull
         private final String lastName;
 
-        public PersonDto(Integer id, String email, String firstName, String lastName) {
+        public PersonInnerDTO(Integer id, String email, String firstName, String lastName) {
             this.id = id;
             this.email = email;
             this.firstName = firstName;

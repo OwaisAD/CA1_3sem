@@ -37,6 +37,7 @@ public class PersonFacadeTest {
 
     Hobby h2 = new Hobby("https://en.wikipedia.org/wiki/Acrobatics", "Akrobatik", "Generel", "Indendørs", "Fed hobby");
 
+    Person person = new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1);
     public PersonFacadeTest() {
     }
 
@@ -73,23 +74,15 @@ public class PersonFacadeTest {
             em.persist(h1);
             em.persist(h2);
 
+            em.persist(a1);
+            em.persist(a2);
+
+            em.persist(person);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
 
-        EntityManager em2 = emf.createEntityManager();
-        try {
-            em2.getTransaction().begin();
-
-            em2.persist(a1);
-            em2.persist(a2);
-            //em2.persist(new Address(new AddressDTO("Redde Allé", "78", false, 2980)));
-
-            em2.getTransaction().commit();
-        } finally {
-            em2.close();
-        }
     }
 
     @AfterEach
@@ -108,10 +101,8 @@ public class PersonFacadeTest {
 
     @Test
     public void testAddingAHobbyToAPerson() throws Exception {
-        Person person = facade.createPerson(new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1));
-        facade.addHobbyToPerson(person, h1);
-        assertEquals(1, person.getHobbies().size());
-        // HVORFOR FÅR VI IKKE SAT PERSON IND I PEOPLELIST FRA HOBBY, NÅR VI TILFØJER EN HOBBY TIL EN PERSON
+        Person newPerson = facade.addHobbyToPerson(person, h1);
+        assertEquals(1, newPerson.getHobbies().size());
 
     }
 
