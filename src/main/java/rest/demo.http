@@ -36,12 +36,12 @@ POST http://localhost:8080/ca1/api/persons/3/hobby/8
 Content-Type: application/json
 
 ###
-PUT http://localhost:8080/ca1/api/persons/1
+PUT http://localhost:8080/ca1/api/persons/9
 Content-Type: application/json
 
-{"email": "andreas@gmail.com",
-"firstName": "Andreas",
-"lastName":  "Fritzbøger"}
+{"email": "elon@gmail.gov",
+"firstName": "Elon",
+"lastName":  "Musk"}
 
 ###
-DELETE http://localhost:8080/ca1/api/persons/1
+DELETE http://localhost:8080/ca1/api/persons/9
