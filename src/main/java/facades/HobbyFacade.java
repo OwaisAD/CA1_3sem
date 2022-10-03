@@ -3,6 +3,7 @@ package facades;
 import dtos.HobbyDTO;
 import entities.Hobby;
 import entities.Person;
+import errorhandling.EntityNotFoundException;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -64,10 +65,14 @@ public class HobbyFacade {
         }
     }
 
-    public Hobby getHobbyById(int id) {
+    public Hobby getHobbyById(int id) throws EntityNotFoundException{
         EntityManager em = getEntityManager();
         try {
             Hobby hobby = em.find(Hobby.class, id);
+
+            if(hobby == null)
+                throw new EntityNotFoundException("Entity for Hobby with ID: " + id + " was not found");
+
             return hobby;
         } finally {
             em.close();

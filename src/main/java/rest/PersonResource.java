@@ -7,6 +7,7 @@ import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
+import errorhandling.EntityNotFoundException;
 import facades.*;
 import utils.EMF_Creator;
 
@@ -16,6 +17,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //Todo Remove or change relevant parts before ACTUAL use
 @Path("persons")
@@ -46,11 +49,55 @@ public class PersonResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response createPerson(String person) {
+    public Response createPerson(String person) throws EntityNotFoundException {
+
+        String errorMsg = "";
 
         // Make person from request body
         Person personFromJson = GSON.fromJson(person, Person.class);
         System.out.println(personFromJson);
+
+        //VALIDATE PERSON INFORMATION
+        // validate person email
+        String email = personFromJson.getEmail();
+        Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        boolean isValidEmail = matcher.find();
+        if(!isValidEmail || email == null) {
+            errorMsg += "Parsed email was in a wrong format. ";
+        }
+
+        if(personFromJson.getFirstName().length() < 2) {
+            errorMsg += "Firstname was not parsed correctly (at least two characters). ";
+        }
+
+        if(personFromJson.getLastName().length() < 2) {
+            errorMsg += "Lastname was not parsed correctly (at least two characters). ";
+        }
+
+        String phoneNumber = personFromJson.getPhone().getNumber();
+        String VALID_PHONE_NUMBER_REGEX = "(?<!\\d)\\d{8}(?!\\d)";
+        boolean isValidNumber = phoneNumber.matches(VALID_PHONE_NUMBER_REGEX);
+        if(!isValidNumber || phoneNumber == null) {
+            errorMsg += "Invalid number parsed. Please enter a valid danish phone number (8 digits). ";
+        }
+
+        if(personFromJson.getAddress().getStreet() == null) {
+            errorMsg += "Street was not parsed. ";
+        }
+        int zipCode = personFromJson.getAddress().getCityInfo().getZipCode();
+        String VALID_ZIPCODE_REGEX = "^[0-9]{3,4}$"; // this here can be made to check if the zipcode given is a correct danish zipcode
+        String zipCodeToStr = String.valueOf(zipCode);
+        boolean checkZipCode = zipCodeToStr.matches(VALID_ZIPCODE_REGEX);
+        if(!checkZipCode || zipCodeToStr == null) {
+            errorMsg += "Unknown ZipCode format: " + zipCode + ". Please enter a valid danish zipcode (typically 3 or 4 digits). ";
+        }
+
+        if(errorMsg.length() > 1) {
+            throw new EntityNotFoundException(errorMsg);
+        }
 
         // get cityInfo
         CityInfoDTO cityInfoDTO = cityInfoFacade.getCityByZipCode(personFromJson.getAddress().getCityInfo().getZipCode());
@@ -69,7 +116,6 @@ public class PersonResource {
 
         // create the person
         Person pNew = FACADE.createPerson(personFromJson);
-
         return Response.ok().entity(GSON.toJson(pNew)).build();
     }
 
@@ -77,34 +123,28 @@ public class PersonResource {
     @Path("{personId}/addhobby/{hobbyId}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response addHobbyToPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) {
+    public Response addHobbyToPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) throws EntityNotFoundException {
 
         // Find the hobby
         Hobby foundHobby = hobbyFacade.getHobbyById(hobbyId);
-
         System.out.println("FOUND HOBBY");
         System.out.println(foundHobby);
 
-        // Find the person
-        Person person = FACADE.getPersonById(personId);
-        System.out.println("FOUND PERSON");
-        System.out.println(person);
-
         // Add hobby to person
-        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(person, foundHobby)))).build();
+        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(personId, foundHobby)))).build();
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonById(@PathParam("id") int id) {
+    public Response getPersonById(@PathParam("id") int id) throws EntityNotFoundException {
         return Response.ok().entity(GSON.toJson(FACADE.getPersonById(id))).build();
     }
 
     @GET
     @Path("/phone/{phoneNumber}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) {
+    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) throws EntityNotFoundException {
         return Response.ok().entity(GSON.toJson(FACADE.getPersonByPhoneNumber(phoneNumber))).build();
     }
 
@@ -125,7 +165,7 @@ public class PersonResource {
     @GET
     @Path("/amount/hobby/{hobbyId}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAmountOfPersonsGivenAHobby(@PathParam("hobbyId") int hobbyId) {
+    public String getAmountOfPersonsGivenAHobby(@PathParam("hobbyId") int hobbyId) throws EntityNotFoundException {
 
         Hobby hobby = hobbyFacade.getHobbyById(hobbyId);
         Long peopleAmount = FACADE.getAmountOfPersonsGivenAHobby(hobbyId);
@@ -149,8 +189,9 @@ public class PersonResource {
 
     @DELETE
     @Path("/{personId}")
-    public Response deletePerson(@PathParam("personId") int personId) {
-        Person person = FACADE.getPersonById(personId);
+    public Response deletePerson(@PathParam("personId") int personId) throws EntityNotFoundException {
+        PersonDTO personDTO = FACADE.getPersonById(personId);
+        Person person = new Person(personDTO);
         FACADE.deletePerson(person);
         return Response.ok().build();
     }

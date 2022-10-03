@@ -3,13 +3,16 @@ package facades;
 import dtos.PersonDTO;
 import entities.Hobby;
 import entities.Person;
+import entities.Phone;
+import errorhandling.EntityNotFoundException;
+import errorhandling.GenericExceptionMapper;
 import utils.EMF_Creator;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
+import javax.ws.rs.WebApplicationException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -79,47 +82,66 @@ public class PersonFacade {
         }
     }
 
-    public Person getPersonById(int id) {
+
+    public PersonDTO getPersonById(int id) throws EntityNotFoundException {
         EntityManager em = getEntityManager();
         try {
-            Query query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
-            query.setParameter("personid", id);
+            //Query query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
+            //query.setParameter("personid", id);
+            //Person person = (Person) query.getSingleResult();
 
+            Person person = em.find(Person.class,id);
 
-            Person person = (Person) query.getSingleResult();
-            return person;
+            if(person == null) {
+                throw new EntityNotFoundException("The entity Person with ID: " + id + " was not found");
+            }
 
-
-        } finally {
-            em.close();
-        }
-    }
-
-    public PersonDTO getPersonByPhoneNumber(String phoneNumber) {
-        EntityManager em = getEntityManager();
-        try {
-            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.phone.number = :number", Person.class);
-            query.setParameter("number", phoneNumber);
-            Person person = query.getResultList().get(0); //bør testes
             return new PersonDTO(person);
         } finally {
             em.close();
         }
     }
 
-    public Person addHobbyToPerson(Person person, Hobby hobby) {
-
-        person.addHobbies(hobby);
+    public PersonDTO getPersonByPhoneNumber(String phoneNumber) throws EntityNotFoundException {
+        // check number formatting
+        String regex = "(?<!\\d)\\d{8}(?!\\d)";
+        boolean checkPhoneNumber = phoneNumber.matches(regex);
+        if(!checkPhoneNumber) {
+            throw new WebApplicationException("Please enter a valid danish phone number (8 digits)");
+        }
 
         EntityManager em = getEntityManager();
         try {
-            // check if person exists
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.phone.number = :number", Person.class);
+            query.setParameter("number", phoneNumber);
+            List<Person> personList = query.getResultList(); //bør testes
 
-                em.getTransaction().begin();
+            if(personList.size() == 0) {
+                throw new EntityNotFoundException("The entity Person with number: " + phoneNumber + " was not found");
+            }
 
-                em.merge(person); //this needs to be fixed from the stackoverflow error
+            return new PersonDTO(personList.get(0));
+        } finally {
+            em.close();
+        }
+    }
 
-                em.getTransaction().commit();
+    public Person addHobbyToPerson(int personId, Hobby hobby) throws EntityNotFoundException{
+        EntityManager em = getEntityManager();
+        Person person = null;
+        try {
+            person = em.find(Person.class, personId);
+
+            if(person == null)
+                throw new EntityNotFoundException("The entity Person with ID: " + personId + " was not found");
+
+            person.addHobbies(hobby);
+
+            em.getTransaction().begin();
+
+            em.merge(person);
+
+            em.getTransaction().commit();
 
         } finally {
             em.close();
@@ -128,11 +150,24 @@ public class PersonFacade {
     }
 
     public List<PersonDTO> getAllPersonsGivenAZipCode(int zipCode) {
+        // check number formatting
+        String regex = "^[0-9]{3,4}$"; // this here can be made to check if the zipcode given is a correct danish zipcode
+        String zipCodeToStr = String.valueOf(zipCode);
+        boolean checkZipCode = zipCodeToStr.matches(regex);
+        if(!checkZipCode) {
+            throw new WebApplicationException("Unknown ZipCode format: " + zipCode + ". Please enter a valid danish zipcode (typically 3 or 4 digits)");
+        }
+
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityinfo.zipCode= :zip", Person.class);
             query.setParameter("zip", zipCode);
             List<Person> persons = query.getResultList();
+
+            if(persons.size() == 0) {
+                throw new WebApplicationException("Found no persons with ZipCode: " + zipCode);
+            }
+
             return PersonDTO.getDtos(persons);
         } finally {
             em.close();
@@ -145,6 +180,11 @@ public class PersonFacade {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbies ph WHERE ph.id = :hobbyid", Person.class);
             query.setParameter("hobbyid", hobbyId);
             List<Person> persons = query.getResultList();
+
+            if(persons.size() == 0) {
+                throw new WebApplicationException("Found no persons with hobby id: " + hobbyId);
+            }
+
             return PersonDTO.getDtos(persons);
         } finally {
             em.close();
@@ -160,18 +200,6 @@ public class PersonFacade {
         } finally {
             em.close();
         }
-    }
-
-
-    /*public PersonDTO getPersonByPhoneNumber(String phoneNumber) {
-
-    }*/
-
-    public static void main(String[] args) {
-        emf = EMF_Creator.createEntityManagerFactory();
-        //PersonFacade pf = getPersonFacade(emf);
-
-
     }
 
     public void deletePerson(Person person) {
@@ -203,4 +231,11 @@ public class PersonFacade {
         }
         return person;
     }
+
+    public static void main(String[] args) {
+        emf = EMF_Creator.createEntityManagerFactory();
+        //PersonFacade pf = getPersonFacade(emf);
+
+    }
+
 }

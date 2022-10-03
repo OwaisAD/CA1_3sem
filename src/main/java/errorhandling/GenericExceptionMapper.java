@@ -17,14 +17,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-/**
- *
- * @author jobe
- */
 
 @Provider
 public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
-  static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     @Context
     ServletContext context;
 
@@ -35,8 +31,9 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
         ExceptionDTO err;
         if (ex instanceof WebApplicationException) {
             err = new ExceptionDTO(type.getStatusCode(), ((WebApplicationException) ex).getMessage());
+        } else if (ex instanceof EntityNotFoundException) {
+            err = new ExceptionDTO(404, ((EntityNotFoundException) ex).getMessage()); // vi får forkert type code, vi skal have 404
         } else {
-
             err = new ExceptionDTO(type.getStatusCode(), type.getReasonPhrase());
         }
         return Response.status(type.getStatusCode())
@@ -52,5 +49,5 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
         return Response.Status.INTERNAL_SERVER_ERROR;
 
     }
-        
+
 }

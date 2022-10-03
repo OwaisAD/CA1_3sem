@@ -13,9 +13,9 @@ POST http://localhost:8080/ca1/api/persons
 Content-Type: application/json
 
 {
-  "email": "owais@mail.com",
+  "email": "owais3@mail.com",
   "firstName": "Owais",
-  "lastName": "Dashti",
+  "lastName": "D",
   "phone": {
     "number": "50505050",
     "description": "Telmore",

@@ -2,6 +2,8 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.HobbyDTO;
+import errorhandling.EntityNotFoundException;
 import facades.HobbyFacade;
 import facades.PersonFacade;
 import utils.EMF_Creator;
@@ -37,8 +39,8 @@ public class HobbyResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getHobbyById(@PathParam("id") int id) {
-        return Response.ok().entity(GSON.toJson(FACADE.getHobbyById(id))).build();
+    public Response getHobbyById(@PathParam("id") int id) throws EntityNotFoundException {
+        return Response.ok().entity(GSON.toJson(new HobbyDTO(FACADE.getHobbyById(id)))).build();
     }
 
 
