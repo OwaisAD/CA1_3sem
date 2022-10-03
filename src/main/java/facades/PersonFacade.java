@@ -111,7 +111,6 @@ public class PersonFacade {
             throw new WebApplicationException("Please enter a valid danish phone number (8 digits)");
         }
 
-
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.phone.number = :number", Person.class);
@@ -128,19 +127,18 @@ public class PersonFacade {
         }
     }
 
-    public Person addHobbyToPerson(Person person, Hobby hobby) {
-
-        person.addHobbies(hobby);
-
+    public Person addHobbyToPerson(int personId, Hobby hobby) {
         EntityManager em = getEntityManager();
+        Person person = null;
         try {
-            // check if person exists
+            person = em.find(Person.class, personId);
+            person.addHobbies(hobby);
 
-                em.getTransaction().begin();
+            em.getTransaction().begin();
 
-                em.merge(person); //this needs to be fixed from the stackoverflow error
+            em.merge(person);
 
-                em.getTransaction().commit();
+            em.getTransaction().commit();
 
         } finally {
             em.close();

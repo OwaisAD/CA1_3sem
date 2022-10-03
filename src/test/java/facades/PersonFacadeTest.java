@@ -24,21 +24,21 @@ public class PersonFacadeTest {
     private static HobbyFacade hobbyFacade;
 
 
-    CityInfo c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());
+    static CityInfo c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());
     CityInfo c2 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
 
-    Phone phone1 = new Phone("12345678", "Telenor", false);
+    static Phone phone1 = new Phone("12345678", "Telenor", false);
     Phone phone2 = new Phone("24682468", "CBB", false);
 
-    Address a1 = new Address(new AddressDTO("Sushi Blv", "2tv", false, c1));
+    static Address a1 = new Address(new AddressDTO("Sushi Blv", "2tv", false, c1));
 
     Address a2 = new Address(new AddressDTO("Kanalvej", "5a", false, c2));
 
-    Hobby h1 = new Hobby("https://en.wikipedia.org/wiki/3D_printing", "3D-udskrivning", "Generel", "Indendørs", "Flot hobby bla");
+    static Hobby h1 = new Hobby("https://en.wikipedia.org/wiki/3D_printing", "3D-udskrivning", "Generel", "Indendørs", "Flot hobby bla");
 
-    Hobby h2 = new Hobby("https://en.wikipedia.org/wiki/Acrobatics", "Akrobatik", "Generel", "Indendørs", "Fed hobby");
+    static Hobby h2 = new Hobby("https://en.wikipedia.org/wiki/Acrobatics", "Akrobatik", "Generel", "Indendørs", "Fed hobby");
 
-    Person person = new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1);
+    static Person person = new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1);
 
     Person person2 = new Person("daniel@mail.dk", "Daniel", "Drobek", phone2, a1);
 
@@ -119,8 +119,8 @@ public class PersonFacadeTest {
     // test getting person by id
     @Test
     public void testGettingPersonById() throws EntityNotFoundException {
-        PersonDTO personDTO = facade.getPersonById(person2.getId());
-        assertEquals("daniel@mail.dk", personDTO.getEmail());
+        PersonDTO person = facade.getPersonById(person2.getId());
+        assertEquals("daniel@mail.dk", person.getEmail());
     }
 
 
@@ -134,7 +134,7 @@ public class PersonFacadeTest {
     @Test
     public void testAddingAHobbyToAPerson() throws Exception {
         //add hobby h1 to our person
-        facade.addHobbyToPerson(person, h1);
+        person = facade.addHobbyToPerson(person.getId(), h1);
         assertEquals(1, person.getHobbies().size());
         assertEquals("3D-udskrivning", person.getHobbies().get(0).getName());
         assertEquals("Flot hobby bla", person.getHobbies().get(0).getDescription());
@@ -148,14 +148,14 @@ public class PersonFacadeTest {
 
     @Test
     public void testGetAllPersonsGivenAHobby() {
-        facade.addHobbyToPerson(person2, h2);
+        facade.addHobbyToPerson(person2.getId(), h2);
         List<PersonDTO> personDTOList = facade.getAllPersonsGivenAHobbyId(h2.getId());
         assertEquals("Daniel", personDTOList.get(0).getFirstName());
     }
 
     @Test
     public void testGetAmountOfPersonsGivenAHobby() {
-        facade.addHobbyToPerson(person2, h2);
+        facade.addHobbyToPerson(person2.getId(), h2);
         Long actual = facade.getAmountOfPersonsGivenAHobby(h2.getId());
         assertEquals(1, actual);
     }

@@ -84,17 +84,11 @@ public class PersonResource {
 
         // Find the hobby
         Hobby foundHobby = hobbyFacade.getHobbyById(hobbyId);
-
         System.out.println("FOUND HOBBY");
         System.out.println(foundHobby);
 
-        // Find the person
-        PersonDTO personDTO = FACADE.getPersonById(personId);
-        System.out.println("FOUND PERSON");
-        System.out.println(personDTO);
-
         // Add hobby to person
-        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(new Person(personDTO), foundHobby)))).build();
+        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(personId, foundHobby)))).build();
     }
 
     @GET
@@ -128,7 +122,7 @@ public class PersonResource {
     @GET
     @Path("/amount/hobby/{hobbyId}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAmountOfPersonsGivenAHobby(@PathParam("hobbyId") int hobbyId) {
+    public String getAmountOfPersonsGivenAHobby(@PathParam("hobbyId") int hobbyId) throws EntityNotFoundException {
 
         Hobby hobby = hobbyFacade.getHobbyById(hobbyId);
         Long peopleAmount = FACADE.getAmountOfPersonsGivenAHobby(hobbyId);
