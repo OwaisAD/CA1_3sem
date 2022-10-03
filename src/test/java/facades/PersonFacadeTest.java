@@ -38,6 +38,8 @@ public class PersonFacadeTest {
     Hobby h2 = new Hobby("https://en.wikipedia.org/wiki/Acrobatics", "Akrobatik", "Generel", "Indendørs", "Fed hobby");
 
     Person person = new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1);
+    Person person2 = new Person("daniel@mail.dk", "Daniel", "Drobek", phone2, a1);
+
     public PersonFacadeTest() {
     }
 
@@ -78,6 +80,7 @@ public class PersonFacadeTest {
             em.persist(a2);
 
             em.persist(person);
+            em.persist(person2);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -90,6 +93,8 @@ public class PersonFacadeTest {
 //        Remove any data after each test was run
     }
 
+
+
     @Test
     public void testCreatingAPerson() throws Exception {
         Person person = facade.createPerson(new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1));
@@ -98,14 +103,54 @@ public class PersonFacadeTest {
         System.out.println(person);
     }
 
-
     @Test
-    public void testAddingAHobbyToAPerson() throws Exception {
-        Person newPerson = facade.addHobbyToPerson(person, h1);
-        assertEquals(1, newPerson.getHobbies().size());
+    public void testGettingAllPersons() {
+        List<PersonDTO> personDTOList = facade.getAllPersons();
+        assertEquals(2, personDTOList.size());
+    }
 
+    // test getting person by id
+    @Test
+    public void testGettingPersonById() {
+        PersonDTO personDTO = facade.getPersonById(1);
+        assertEquals("thomas@mail.dk", personDTO.getEmail());
     }
 
 
+    // test getting person by phonenumber
+    @Test
+    public void testGettingPersonByPhoneNumber() {
+        PersonDTO personDTO = facade.getPersonByPhoneNumber("12345678");
+        assertEquals("thomas@mail.dk", personDTO.getEmail());
+    }
+
+    @Test
+    public void testAddingAHobbyToAPerson() throws Exception {
+        //add hobby h1 to our person
+        facade.addHobbyToPerson(person, h1);
+        assertEquals(1, person.getHobbies().size());
+        assertEquals("3D-udskrivning", person.getHobbies().get(0).getName());
+        assertEquals("Flot hobby bla", person.getHobbies().get(0).getDescription());
+    }
+
+    @Test
+    public void testGettingAllPersonsByZipCode() {
+        List<PersonDTO> personDTOList = facade.getAllPersonsGivenAZipCode(2800);
+        assertEquals(2, personDTOList.size());
+    }
+
+    @Test
+    public void testGetAllPersonsGivenAHobby() {
+        facade.addHobbyToPerson(person2, h2);
+        List<PersonDTO> personDTOList = facade.getAllPersonsGivenAHobbyId(h2.getId());
+        assertEquals("Daniel", personDTOList.get(0).getFirstName());
+    }
+
+    @Test
+    public void testGetAmountOfPersonsGivenAHobby() {
+        facade.addHobbyToPerson(person2, h2);
+        Long actual = facade.getAmountOfPersonsGivenAHobby(h2.getId());
+        assertEquals(1, actual);
+    }
 
 }

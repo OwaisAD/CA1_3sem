@@ -81,11 +81,15 @@ public class PersonFacade {
         }
     }
 
-    public Person getPersonById(int id) {
+    public PersonDTO getPersonById(int id) {
         EntityManager em = getEntityManager();
         try {
-            Person person = em.find(Person.class, id);
-            return person;
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
+            query.setParameter("personid", id);
+
+            Person person = query.getResultList().get(0);
+            return new PersonDTO(person);
+
         } finally {
             em.close();
         }

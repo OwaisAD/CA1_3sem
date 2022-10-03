@@ -41,12 +41,7 @@ public class PersonResource {
         return Response.ok().entity(GSON.toJson(FACADE.getAllPersons())).build();
     }
 
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonById(@PathParam("id") int id) {
-        return Response.ok().entity(GSON.toJson(FACADE.getPersonById(id))).build();
-    }
+
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -93,18 +88,25 @@ public class PersonResource {
         System.out.println(foundHobby);
 
         // Find the person
-        Person person = FACADE.getPersonById(personId);
+        PersonDTO personDTO = FACADE.getPersonById(personId);
         System.out.println("FOUND PERSON");
-        System.out.println(person);
+        System.out.println(personDTO);
 
         // Add hobby to person
-        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(person, foundHobby)))).build();
+        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(new Person(personDTO), foundHobby)))).build();
+    }
+
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getPersonById(@PathParam("id") int id) {
+        return Response.ok().entity(GSON.toJson(FACADE.getPersonById(id))).build();
     }
 
     @GET
     @Path("/phone/{phoneNumber}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAllPersons(@PathParam("phoneNumber") String phoneNumber) {
+    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) {
         return Response.ok().entity(GSON.toJson(FACADE.getPersonByPhoneNumber(phoneNumber))).build();
     }
 
