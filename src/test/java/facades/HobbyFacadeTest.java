@@ -113,7 +113,7 @@ public class HobbyFacadeTest {
 
     @Test
     public void testGettingHobbyById() throws Exception {
-        Hobby hobby = facade.getHobbyById(1);
+        Hobby hobby = facade.getHobbyById(h2.getId());
         assertEquals("Akrobatik", hobby.getName());
     }
 

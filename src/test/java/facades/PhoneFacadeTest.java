@@ -67,6 +67,8 @@ public class PhoneFacadeTest {
         assertEquals(4, facade.getAllPhones().size());
     }
 
+
+
     /*@Test
     public void testGettingAPhoneByNumber() throws Exception {
         Phone phone = facade.getPhoneByPhoneNumber("12345678");

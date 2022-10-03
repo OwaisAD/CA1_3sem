@@ -5,14 +5,10 @@
  */
 package utils;
 
-import dtos.RenameMeDTO;
 import java.util.Properties;
 import java.util.Set;
 import com.google.gson.*;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,7 +26,7 @@ public class Utility {
                                     + System.getProperty(obj.toString()) + "}");
             }
     }
-    
+    /*
     public static RenameMeDTO json2DTO(String json) throws UnsupportedEncodingException{
             return gson.fromJson(new String(json.getBytes("UTF8")), RenameMeDTO.class);
     }
@@ -50,5 +46,5 @@ public class Utility {
         String backAgain = DTO2json(rmDTO);
         System.out.println(backAgain);
     }
-
+*/
 }
