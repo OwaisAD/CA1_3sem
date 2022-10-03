@@ -37,13 +37,13 @@ public class PersonResourceTest {
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
-    private static CityInfo c1;
+    private CityInfo c1;
 
-    private static Phone phone1;
+    private Phone phone1;
 
-    private static Address a1;
+    private Address a1;
 
-    Hobby h1 = new Hobby("https://en.wikipedia.org/wiki/3D_printing", "3D-udskrivning", "Generel", "Indendørs", "Flot hobby bla");
+    private Hobby h1;
 
     private Person person;
 
@@ -82,6 +82,7 @@ public class PersonResourceTest {
         c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());;
         phone1 =  new Phone("12345678", "Telenor", false);
         a1 = new Address(new AddressDTO("Sushi Blv", "2tv", false, c1));
+        h1 = new Hobby("https://en.wikipedia.org/wiki/3D_printing", "3D-udskrivning", "Generel", "Indendørs", "Flot hobby bla");
         person = new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1);
         try {
             em.getTransaction().begin();
@@ -89,7 +90,13 @@ public class PersonResourceTest {
             em.persist(c1);
             em.persist(phone1);
             em.persist(a1);
+            em.persist(h1);
             em.persist(person);
+
+            person.addHobbies(h1);
+
+            em.merge(person);
+
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -112,21 +119,23 @@ public class PersonResourceTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("id", equalTo(person.getId()))
-                .body("firstName", equalTo(person.getFirstName()));
-                //.body("address", hasItems(hasEntry("additionalInfo","2th")));
+                .body("firstName", equalTo(person.getFirstName()))
+                .body("phone.description", equalTo("Telenor"))
+                .body("address.cityName", equalTo("Kongens Lyngby"))
+                .body("hobbies.name", hasItems("3D-udskrivning"));
     }
 
-
-    /*@Test
-    public void testGetPersonByPhoneNumber()  {
+    // testing response when trying to get a person with a non-existing id
+    @Test
+    public void testGetPersonByWrongId()  {
         given()
                 .contentType(ContentType.JSON)
-                .get("/persons/{id}",person.getId())
+                .get("/persons/{id}", 9999999)
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("id", equalTo(p1.getId()))
-                .body("name", equalTo(p1.getName()))
-                .body("children", hasItems(hasEntry("name","Joseph"),hasEntry("name","Alberta")));
-    }*/
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("code", equalTo(404))
+                .body("message", equalTo("The Person entity with ID: 9999999 was not found"));
+
+    }
 }

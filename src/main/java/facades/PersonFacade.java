@@ -10,6 +10,7 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -84,10 +85,10 @@ public class PersonFacade {
     public PersonDTO getPersonById(int id) {
         EntityManager em = getEntityManager();
         try {
-            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
+            Query query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
             query.setParameter("personid", id);
 
-            Person person = query.getResultList().get(0);
+            Person person = (Person) query.getSingleResult();
             return new PersonDTO(person);
 
         } finally {
