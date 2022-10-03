@@ -13,11 +13,11 @@ POST http://localhost:8080/ca1/api/persons
 Content-Type: application/json
 
 {
-  "email": "owais2@mail.com",
-  "firstName": "Owais",
-  "lastName": "Dashti",
+  "email": "owais3mail.com",
+  "firstName": "O",
+  "lastName": "D",
   "phone": {
-    "number": "50505050",
+    "number": "5050505",
     "description": "Telmore",
     "isPrivate": false
   },

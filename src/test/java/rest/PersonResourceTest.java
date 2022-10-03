@@ -140,6 +140,8 @@ public class PersonResourceTest {
                 .body("address.cityinfo.cityName", equalTo("Helsingør"));
     }
 
+
+
     @Test
     public void testGetPersonById()  {
         given()
