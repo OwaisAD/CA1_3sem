@@ -118,8 +118,8 @@ public class PersonFacadeTest {
     // test getting person by id
     @Test
     public void testGettingPersonById() {
-        PersonDTO personDTO = facade.getPersonById(1);
-        assertEquals("thomas@mail.dk", personDTO.getEmail());
+        PersonDTO personDTO = facade.getPersonById(person2.getId());
+        assertEquals("daniel@mail.dk", personDTO.getEmail());
     }
 
 
