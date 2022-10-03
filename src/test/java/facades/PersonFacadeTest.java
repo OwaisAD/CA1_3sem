@@ -38,7 +38,12 @@ public class PersonFacadeTest {
     Hobby h2 = new Hobby("https://en.wikipedia.org/wiki/Acrobatics", "Akrobatik", "Generel", "Indendørs", "Fed hobby");
 
     Person person = new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1);
+
     Person person2 = new Person("daniel@mail.dk", "Daniel", "Drobek", phone2, a1);
+
+
+
+
 
     public PersonFacadeTest() {
     }
@@ -63,8 +68,9 @@ public class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.persist(c1);
@@ -97,9 +103,9 @@ public class PersonFacadeTest {
 
     @Test
     public void testCreatingAPerson() throws Exception {
-        Person person = facade.createPerson(new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1));
-        assertEquals("Thomas", person.getFirstName());
-        assertEquals("Sushi Blv", person.getAddress().getStreet());
+        Person person = facade.createPerson(new Person("andreas@mail.dk", "Andreas", "Fritzbøger", phone2, a2));
+        assertEquals("Andreas", person.getFirstName());
+        assertEquals("Kanalvej", person.getAddress().getStreet());
         System.out.println(person);
     }
 
@@ -152,5 +158,7 @@ public class PersonFacadeTest {
         Long actual = facade.getAmountOfPersonsGivenAHobby(h2.getId());
         assertEquals(1, actual);
     }
+
+
 
 }

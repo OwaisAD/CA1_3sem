@@ -21,6 +21,9 @@ public class CityInfoFacadeTest {
     private static EntityManagerFactory emf;
     private static CityInfoFacade facade;
 
+    private CityInfo cityInfo1 = new CityInfo(3000, "Helsingør");
+    private CityInfo cityInfo2 = new CityInfo(2800, "Kongens Lyngby");
+
 
     public CityInfoFacadeTest() {
     }
@@ -45,8 +48,8 @@ public class CityInfoFacadeTest {
             em.getTransaction().begin();
             em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
 
-            em.persist(new CityInfo(3000, "Helsingør"));
-            em.persist(new CityInfo(2800, "Kongens Lyngby"));
+            em.persist(cityInfo1);
+            em.persist(cityInfo2);
 
             em.getTransaction().commit();
         } finally {
@@ -70,13 +73,13 @@ public class CityInfoFacadeTest {
 
     @Test
     public void testGettingCityInfoById() throws Exception {
-        CityInfoDTO cityInfoDTO = facade.getCityInfoById(1);
+        CityInfoDTO cityInfoDTO = facade.getCityInfoById(cityInfo1.getId());
         assertEquals("Helsingør", cityInfoDTO.getCityName());
     }
 
     @Test
     public void testGettingCityByZipCode() throws Exception {
-        CityInfoDTO cityInfoDTO = facade.getCityByZipCode(3000);
+        CityInfoDTO cityInfoDTO = facade.getCityByZipCode(cityInfo1.getZipCode());
         assertEquals("Helsingør", cityInfoDTO.getCityName());
     }
 
