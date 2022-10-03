@@ -5,6 +5,7 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -59,22 +60,22 @@ public class PhoneFacade {
         }
     }
 
-    public static Phone getPhoneByPhoneNumber(Phone phone) {
+    public Phone getPhoneByPhoneNumber(String number) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<Phone> query = em.createQuery("SELECT p FROM Phone p WHERE p.number = :phoneNumber", Phone.class);
-            query.setParameter("phoneNumber", phone.getNumber());
-            List<Phone> phoneList = query.getResultList();
-            return phoneList.get(0);
+            Query query = em.createQuery("SELECT p FROM Phone p WHERE p.number = :phoneNumber", Phone.class);
+            query.setParameter("phoneNumber", number);
+            Phone phone = (Phone) query.getSingleResult();
+            return phone;
         } finally {
             em.close();
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         PhoneFacade pf = getPhoneFacade(emf);
         Phone phone = pf.createPhone(new Phone("12345678", "Telenor", false));
         System.out.println(phone);
-    }
+    }*/
 }

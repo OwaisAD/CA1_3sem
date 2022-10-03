@@ -81,24 +81,14 @@ public class AddressFacade {
         }
     }
 
-    public AddressDTO getAddressById(int id) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            Address addressFound = em.find(Address.class, id);
-            return new AddressDTO(addressFound);
-        } finally {
-            em.close();
-        }
-    }
-
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         //PersonFacade pf = getPersonFacade(emf);
         AddressFacade addressFacade = getAddressFacade(emf);
         //System.out.println(addressFacade.getCityInfoByZipCode(2800));
         //System.out.println(getAddressById(1));
 
-    }
+    }*/
 
 
 }

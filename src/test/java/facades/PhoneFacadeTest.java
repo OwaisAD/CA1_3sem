@@ -67,14 +67,17 @@ public class PhoneFacadeTest {
         assertEquals(4, facade.getAllPhones().size());
     }
 
+    @Test
+    public void testGetAllPhones() {
+        List<Phone> phonesList = facade.getAllPhones();
+        assertEquals(3, phonesList.size());
+    }
 
-
-    /*@Test
-    public void testGettingAPhoneByNumber() throws Exception {
-        Phone phone = facade.getPhoneByPhoneNumber("12345678");
-        assertEquals("Telenor", phone.getDescription());
-    }*/
-
+    @Test
+    public void getPhoneByPhoneNumber() {
+        Phone phone = facade.getPhoneByPhoneNumber("98765432");
+        assertEquals("Telia", phone.getDescription());
+    }
 
 
 }

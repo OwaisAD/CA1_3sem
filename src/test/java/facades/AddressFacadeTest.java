@@ -77,13 +77,6 @@ public class AddressFacadeTest {
 //        Remove any data after each test was run
     }
 
-    // TODO: Delete or change this method 
-    @Test
-    public void testGettingCityInfoByZipCode() throws Exception {
-        CityInfoDTO cityInfo = facade.getCityInfoByZipCode(2800);
-        System.out.println(cityInfo);
-        assertEquals("Kongens Lyngby", cityInfo.getCityName());
-    }
 
     @Test
     public void testCreatingAnAddress() throws Exception {
@@ -94,6 +87,14 @@ public class AddressFacadeTest {
     }
 
     @Test
+    public void testGettingCityInfoByZipCode() throws Exception {
+        CityInfoDTO cityInfo = facade.getCityInfoByZipCode(2800);
+        System.out.println(cityInfo);
+        assertEquals("Kongens Lyngby", cityInfo.getCityName());
+    }
+
+
+    @Test
     public void testGettingAllAddressesByZipCode() throws Exception {
         List<AddressDTO> addressList = facade.getAllAddressesByZipCode(2800);
         assertEquals(1, addressList.size());
@@ -102,11 +103,5 @@ public class AddressFacadeTest {
         assertEquals("5a", address.getAdditionalInfo());
     }
 
-    /*@Test
-    public void testGettingAddressById() throws Exception {
-        AddressDTO address = facade.getAddressById(c2.getId());
-        assertEquals("Kongens Lyngby", address.getCityInfo().getCityName());
-        assertEquals("Kanalvej", address.getStreet());
-    }*/
 
 }
