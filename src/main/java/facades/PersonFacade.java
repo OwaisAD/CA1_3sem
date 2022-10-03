@@ -127,11 +127,15 @@ public class PersonFacade {
         }
     }
 
-    public Person addHobbyToPerson(int personId, Hobby hobby) {
+    public Person addHobbyToPerson(int personId, Hobby hobby) throws EntityNotFoundException{
         EntityManager em = getEntityManager();
         Person person = null;
         try {
             person = em.find(Person.class, personId);
+
+            if(person == null)
+                throw new EntityNotFoundException("The entity Person with ID: " + personId + " was not found");
+
             person.addHobbies(hobby);
 
             em.getTransaction().begin();
@@ -147,11 +151,24 @@ public class PersonFacade {
     }
 
     public List<PersonDTO> getAllPersonsGivenAZipCode(int zipCode) {
+        // check number formatting
+        String regex = "^[0-9]{3,4}$"; // this here can be made to check if the zipcode given is a correct danish zipcode
+        String zipCodeToStr = String.valueOf(zipCode);
+        boolean checkZipCode = zipCodeToStr.matches(regex);
+        if(!checkZipCode) {
+            throw new WebApplicationException("Unknown ZipCode format: " + zipCode + ". Please enter a valid danish zipcode (typically 3 or 4 digits)");
+        }
+
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityinfo.zipCode= :zip", Person.class);
             query.setParameter("zip", zipCode);
             List<Person> persons = query.getResultList();
+
+            if(persons.size() == 0) {
+                throw new WebApplicationException("Found no persons with ZipCode: " + zipCode);
+            }
+
             return PersonDTO.getDtos(persons);
         } finally {
             em.close();

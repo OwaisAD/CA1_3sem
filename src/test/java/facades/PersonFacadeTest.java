@@ -144,14 +144,14 @@ public class PersonFacadeTest {
     }
 
     @Test
-    public void testGetAllPersonsGivenAHobby() {
+    public void testGetAllPersonsGivenAHobby() throws EntityNotFoundException {
         facade.addHobbyToPerson(person2.getId(), h2);
         List<PersonDTO> personDTOList = facade.getAllPersonsGivenAHobbyId(h2.getId());
         assertEquals("Daniel", personDTOList.get(0).getFirstName());
     }
 
     @Test
-    public void testGetAmountOfPersonsGivenAHobby() {
+    public void testGetAmountOfPersonsGivenAHobby() throws EntityNotFoundException {
         facade.addHobbyToPerson(person2.getId(), h2);
         Long actual = facade.getAmountOfPersonsGivenAHobby(h2.getId());
         assertEquals(1, actual);
