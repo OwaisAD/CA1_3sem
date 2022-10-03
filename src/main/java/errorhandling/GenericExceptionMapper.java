@@ -32,7 +32,7 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
         if (ex instanceof WebApplicationException) {
             err = new ExceptionDTO(type.getStatusCode(), ((WebApplicationException) ex).getMessage());
         } else if (ex instanceof EntityNotFoundException) {
-            err = new ExceptionDTO(type.getStatusCode(), ((EntityNotFoundException) ex).getMessage()); // vi får forkert type code, vi skal have 404
+            err = new ExceptionDTO(404, ((EntityNotFoundException) ex).getMessage()); // vi får forkert type code, vi skal have 404
         } else {
             err = new ExceptionDTO(type.getStatusCode(), type.getReasonPhrase());
         }
