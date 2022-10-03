@@ -157,14 +157,14 @@ public class PersonFacadeTest {
 
     @Test
     public void testDeletePerson() {
-        facade.deletePerson(person2);
+        facade.deletePerson(new PersonDTO(person2));
         assertThrows(EntityNotFoundException.class, () -> facade.getPersonById(person2.getId()));
     }
 
     @Test
     public void testDeletePersonWithAHobby() throws EntityNotFoundException {
         facade.addHobbyToPerson(person2.getId(),h2);
-        facade.deletePerson(person2);
+        facade.deletePerson(new PersonDTO(person2));
         assertThrows(EntityNotFoundException.class, () -> facade.getPersonById(person2.getId()));
 
         assertDoesNotThrow(() -> hobbyFacade.getHobbyById(h2.getId()));
