@@ -1,6 +1,9 @@
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dtos.AddressDTO;
+import dtos.PersonDTO;
 import entities.*;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -34,10 +37,13 @@ public class PersonResourceTest {
     private static final String SERVER_URL = "http://localhost/api";
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
     private CityInfo c1;
+
+    private CityInfo c2;
 
     private Phone phone1;
 
@@ -79,7 +85,8 @@ public class PersonResourceTest {
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
-        c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());;
+        c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());
+        c2 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
         phone1 =  new Phone("12345678", "Telenor", false);
         a1 = new Address(new AddressDTO("Sushi Blv", "2tv", false, c1));
         h1 = new Hobby("https://en.wikipedia.org/wiki/3D_printing", "3D-udskrivning", "Generel", "Indendørs", "Flot hobby bla");
@@ -88,6 +95,7 @@ public class PersonResourceTest {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.persist(c1);
+            em.persist(c2);
             em.persist(phone1);
             em.persist(a1);
             em.persist(h1);
@@ -104,11 +112,33 @@ public class PersonResourceTest {
     }
 
     @Test
-    public void testServerIsUp() {
+    public void testGetAllPersons() {
         System.out.println("Testing is server UP");
         given().when().get("/persons").then().statusCode(200);
     }
 
+
+    @Test
+    public void testCreatingAPerson_Post() {
+        CityInfo c1 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
+        Phone phone1 = new Phone("55555555", "YouSee", false);
+        Address a1 = new Address(new AddressDTO("Apple", "1st", false, c1));
+        Person person = new Person("daniel@mail.dk", "Daniel", "Ceo", phone1, a1);
+        String requestBody = GSON.toJson(person);
+
+        given()
+                .header("Content-type", ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .post("/persons")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("id", equalTo(2))
+                .body("phone.number", equalTo("55555555"))
+                .body("address.cityinfo.cityName", equalTo("Helsingør"));
+    }
 
     @Test
     public void testGetPersonById()  {
@@ -133,9 +163,11 @@ public class PersonResourceTest {
                 .get("/persons/{id}", 9999999)
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
-                .body("code", equalTo(404))
-                .body("message", equalTo("The Person entity with ID: 9999999 was not found"));
-
+                //.statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                //.body("code", equalTo(404))
+                .body("message", equalTo("The entity Person with ID: 9999999 was not found"));
     }
+
+
+
 }
