@@ -24,26 +24,23 @@ public class PersonFacadeTest {
     private static HobbyFacade hobbyFacade;
 
 
-    static CityInfo c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());
-    CityInfo c2 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
+    private CityInfo c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());
+    private CityInfo c2 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
 
-    static Phone phone1 = new Phone("12345678", "Telenor", false);
-    Phone phone2 = new Phone("24682468", "CBB", false);
+    private Phone phone1 = new Phone("12345678", "Telenor", false);
+    private Phone phone2 = new Phone("24682468", "CBB", false);
 
-    static Address a1 = new Address(new AddressDTO("Sushi Blv", "2tv", false, c1));
+    private Address a1 = new Address(new AddressDTO("Sushi Blv", "2tv", false, c1));
 
-    Address a2 = new Address(new AddressDTO("Kanalvej", "5a", false, c2));
+    private Address a2 = new Address(new AddressDTO("Kanalvej", "5a", false, c2));
 
-    static Hobby h1 = new Hobby("https://en.wikipedia.org/wiki/3D_printing", "3D-udskrivning", "Generel", "Indendørs", "Flot hobby bla");
+    private Hobby h1 = new Hobby("https://en.wikipedia.org/wiki/3D_printing", "3D-udskrivning", "Generel", "Indendørs", "Flot hobby bla");
 
-    static Hobby h2 = new Hobby("https://en.wikipedia.org/wiki/Acrobatics", "Akrobatik", "Generel", "Indendørs", "Fed hobby");
+    private Hobby h2 = new Hobby("https://en.wikipedia.org/wiki/Acrobatics", "Akrobatik", "Generel", "Indendørs", "Fed hobby");
 
-    static Person person = new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1);
+    private Person person = new Person("thomas@mail.dk", "Thomas", "Fritzbøger", phone1, a1);
 
-    Person person2 = new Person("daniel@mail.dk", "Daniel", "Drobek", phone2, a1);
-
-
-
+    private Person person2 = new Person("daniel@mail.dk", "Daniel", "Drobek", phone2, a1);
 
 
     public PersonFacadeTest() {
