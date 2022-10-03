@@ -181,6 +181,11 @@ public class PersonFacade {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbies ph WHERE ph.id = :hobbyid", Person.class);
             query.setParameter("hobbyid", hobbyId);
             List<Person> persons = query.getResultList();
+
+            if(persons.size() == 0) {
+                throw new WebApplicationException("Found no persons with hobby id: " + hobbyId);
+            }
+
             return PersonDTO.getDtos(persons);
         } finally {
             em.close();
