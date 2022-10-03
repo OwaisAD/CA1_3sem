@@ -3,6 +3,7 @@ package facades;
 import dtos.AddressDTO;
 import dtos.PersonDTO;
 import entities.*;
+import errorhandling.EntityNotFoundException;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -117,7 +118,7 @@ public class PersonFacadeTest {
 
     // test getting person by id
     @Test
-    public void testGettingPersonById() {
+    public void testGettingPersonById() throws EntityNotFoundException {
         PersonDTO personDTO = facade.getPersonById(person2.getId());
         assertEquals("daniel@mail.dk", personDTO.getEmail());
     }
@@ -125,7 +126,7 @@ public class PersonFacadeTest {
 
     // test getting person by phonenumber
     @Test
-    public void testGettingPersonByPhoneNumber() {
+    public void testGettingPersonByPhoneNumber() throws EntityNotFoundException {
         PersonDTO personDTO = facade.getPersonByPhoneNumber("12345678");
         assertEquals("thomas@mail.dk", personDTO.getEmail());
     }

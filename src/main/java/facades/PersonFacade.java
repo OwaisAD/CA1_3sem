@@ -6,13 +6,15 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import errorhandling.EntityNotFoundException;
+import errorhandling.GenericExceptionMapper;
 import utils.EMF_Creator;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
+import javax.ws.rs.WebApplicationException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -82,27 +84,45 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO getPersonById(int id) {
+    public PersonDTO getPersonById(int id) throws EntityNotFoundException {
         EntityManager em = getEntityManager();
         try {
-            Query query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
-            query.setParameter("personid", id);
+            //Query query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
+            //query.setParameter("personid", id);
+            //Person person = (Person) query.getSingleResult();
 
-            Person person = (Person) query.getSingleResult();
+            Person person = em.find(Person.class,id);
+
+            if(person == null) {
+                throw new EntityNotFoundException("The entity Person with ID: " + id + " was not found");
+            }
+
             return new PersonDTO(person);
-
         } finally {
             em.close();
         }
     }
 
-    public PersonDTO getPersonByPhoneNumber(String phoneNumber) {
+    public PersonDTO getPersonByPhoneNumber(String phoneNumber) throws EntityNotFoundException {
+        // check number formatting
+        String regex = "(?<!\\d)\\d{8}(?!\\d)";
+        boolean checkPhoneNumber = phoneNumber.matches(regex);
+        if(!checkPhoneNumber) {
+            throw new WebApplicationException("Please enter a valid danish phone number (8 digits)");
+        }
+
+
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.phone.number = :number", Person.class);
             query.setParameter("number", phoneNumber);
-            Person person = query.getResultList().get(0); //bør testes
-            return new PersonDTO(person);
+            List<Person> personList = query.getResultList(); //bør testes
+
+            if(personList.size() == 0) {
+                throw new EntityNotFoundException("The entity Person with number: " + phoneNumber + " was not found");
+            }
+
+            return new PersonDTO(personList.get(0));
         } finally {
             em.close();
         }

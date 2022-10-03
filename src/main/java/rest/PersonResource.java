@@ -7,6 +7,7 @@ import dtos.CityInfoDTO;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
+import errorhandling.EntityNotFoundException;
 import facades.*;
 import utils.EMF_Creator;
 
@@ -79,7 +80,7 @@ public class PersonResource {
     @Path("{personId}/addhobby/{hobbyId}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response addHobbyToPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) {
+    public Response addHobbyToPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) throws EntityNotFoundException {
 
         // Find the hobby
         Hobby foundHobby = hobbyFacade.getHobbyById(hobbyId);
@@ -99,14 +100,14 @@ public class PersonResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonById(@PathParam("id") int id) {
+    public Response getPersonById(@PathParam("id") int id) throws EntityNotFoundException {
         return Response.ok().entity(GSON.toJson(FACADE.getPersonById(id))).build();
     }
 
     @GET
     @Path("/phone/{phoneNumber}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) {
+    public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) throws EntityNotFoundException {
         return Response.ok().entity(GSON.toJson(FACADE.getPersonByPhoneNumber(phoneNumber))).build();
     }
 
