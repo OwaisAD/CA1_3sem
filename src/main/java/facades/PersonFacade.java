@@ -202,9 +202,11 @@ public class PersonFacade {
         }
     }
 
-    public void deletePerson(Person person) {
+    public void deletePerson(PersonDTO personDTO) {
         EntityManager em = getEntityManager();
         try {
+            Person person = em.find(Person.class, personDTO.getId());
+
             em.getTransaction().begin();
             if (!em.contains(person)) {
                 person = em.merge(person);

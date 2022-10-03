@@ -191,8 +191,7 @@ public class PersonResource {
     @Path("/{personId}")
     public Response deletePerson(@PathParam("personId") int personId) throws EntityNotFoundException {
         PersonDTO personDTO = FACADE.getPersonById(personId);
-        Person person = new Person(personDTO);
-        FACADE.deletePerson(person);
+        FACADE.deletePerson(personDTO);
         return Response.ok().build();
     }
 }
