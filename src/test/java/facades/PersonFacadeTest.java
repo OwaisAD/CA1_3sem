@@ -8,10 +8,11 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
@@ -118,8 +119,8 @@ public class PersonFacadeTest {
     // test getting person by id
     @Test
     public void testGettingPersonById() {
-        PersonDTO personDTO = facade.getPersonById(person2.getId());
-        assertEquals("daniel@mail.dk", personDTO.getEmail());
+        Person person = facade.getPersonById(person2.getId());
+        assertEquals("daniel@mail.dk", person.getEmail());
     }
 
 
@@ -159,6 +160,24 @@ public class PersonFacadeTest {
         assertEquals(1, actual);
     }
 
+    @Test
+    public void testDeletePerson() {
+        facade.deletePerson(person2);
+        assertThrows(NoResultException.class, () -> facade.getPersonById(person2.getId()));
+    }
 
+    @Test
+    public void testDeletePersonWithAHobby() {
+        facade.addHobbyToPerson(person2,h2);
+        facade.deletePerson(person2);
+        assertThrows(NoResultException.class, () -> facade.getPersonById(person2.getId()));
 
+        assertDoesNotThrow(() -> hobbyFacade.getHobbyById(h2.getId()));
+    }
+
+    @Test
+    public void testEditPersonById() {
+        person = facade.editPersonById(person.getId(),"anders@gmail.com","Anders","Fritzbøger");
+        assertNotEquals("Thomas",person.getFirstName());
+    }
 }

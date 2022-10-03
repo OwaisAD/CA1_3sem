@@ -39,11 +39,11 @@ public class Person {
     private Phone phone;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ADDRESS_id", nullable = false)
     private Address address;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "HOBBY_has_PERSON",
             joinColumns = @JoinColumn(name = "PERSON_id"),
             inverseJoinColumns = @JoinColumn(name = "HOBBY_id"))

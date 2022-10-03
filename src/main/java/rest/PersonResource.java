@@ -57,7 +57,6 @@ public class PersonResource {
         System.out.println(cityInfoDTO);
         personFromJson.getAddress().setCityInfo(new CityInfo(cityInfoDTO));
 
-
         // create address
         AddressDTO a = addressFacade.create(new AddressDTO(personFromJson.getAddress()));
         System.out.println(a);
@@ -67,7 +66,6 @@ public class PersonResource {
         Phone phone = phoneFacade.createPhone(personFromJson.getPhone());
         System.out.println(phone);
         personFromJson.setPhone(phone);
-
 
         // create the person
         Person pNew = FACADE.createPerson(personFromJson);
@@ -88,12 +86,12 @@ public class PersonResource {
         System.out.println(foundHobby);
 
         // Find the person
-        PersonDTO personDTO = FACADE.getPersonById(personId);
+        Person person = FACADE.getPersonById(personId);
         System.out.println("FOUND PERSON");
-        System.out.println(personDTO);
+        System.out.println(person);
 
         // Add hobby to person
-        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(new Person(personDTO), foundHobby)))).build();
+        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(person, foundHobby)))).build();
     }
 
     @GET
@@ -135,4 +133,25 @@ public class PersonResource {
         return "{\"hobby\":\"" + hobby.getName() + "\"" + "," + "\"personcount\":\""+ peopleAmount +"\"" + "}";
     }
 
+    @PUT
+    @Path("/{personId}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response editPerson(@PathParam("personId") int personId, String person) {
+        Person personFromJson = GSON.fromJson(person, Person.class);
+
+        Person personEntity = FACADE.editPersonById(personId,personFromJson.getEmail(),personFromJson.getFirstName(),personFromJson.getLastName());
+
+        PersonDTO personDTO = new PersonDTO(personEntity);
+
+        return Response.ok(GSON.toJson(personDTO)).build();
+    }
+
+    @DELETE
+    @Path("/{personId}")
+    public Response deletePerson(@PathParam("personId") int personId) {
+        Person person = FACADE.getPersonById(personId);
+        FACADE.deletePerson(person);
+        return Response.ok().build();
+    }
 }

@@ -1,11 +1,8 @@
 package facades;
 
-import dtos.HobbyDTO;
 import dtos.PersonDTO;
-import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
-import entities.Phone;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -82,14 +79,16 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO getPersonById(int id) {
+    public Person getPersonById(int id) {
         EntityManager em = getEntityManager();
         try {
             Query query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
             query.setParameter("personid", id);
 
+
             Person person = (Person) query.getSingleResult();
-            return new PersonDTO(person);
+            return person;
+
 
         } finally {
             em.close();
@@ -175,4 +174,33 @@ public class PersonFacade {
 
     }
 
+    public void deletePerson(Person person) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (!em.contains(person)) {
+                person = em.merge(person);
+            }
+            em.remove(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Person editPersonById(int personId, String email, String firstName, String lastName) {
+        EntityManager em = getEntityManager();
+        Person person = em.find(Person.class,personId);
+        person.setEmail(email);
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
+        try {
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return person;
+    }
 }

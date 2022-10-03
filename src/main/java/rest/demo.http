@@ -31,8 +31,17 @@ Content-Type: application/json
   }
 }
 
-
-
 ###
 POST http://localhost:8080/ca1/api/persons/3/hobby/8
 Content-Type: application/json
+
+###
+PUT http://localhost:8080/ca1/api/persons/1
+Content-Type: application/json
+
+{"email": "andreas@gmail.com",
+"firstName": "Andreas",
+"lastName":  "Fritzbøger"}
+
+###
+DELETE http://localhost:8080/ca1/api/persons/1
