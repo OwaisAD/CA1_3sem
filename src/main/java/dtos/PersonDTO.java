@@ -199,8 +199,6 @@ public class PersonDTO implements Serializable {
 
         public CityInfoInnerDTO cityInfo;
 
-        private int zipCode;
-        private String cityName;
 
         public AddressInnerDTO(Address address) {
             this.id = address.getId();
@@ -226,13 +224,6 @@ public class PersonDTO implements Serializable {
             return isPrivate;
         }
 
-        public int getZipCode() {
-            return zipCode;
-        }
-
-        public String getCityName() {
-            return cityName;
-        }
 
         @Override
         public String toString() {

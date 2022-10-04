@@ -139,10 +139,11 @@ public class AddressDTO {
 
         @Override
         public String toString() {
-            return getClass().getSimpleName() + "(" +
-                    "id = " + id + ", " +
-                    "zipCode = " + zipCode + ", " +
-                    "cityName = " + cityName + ")";
+            return "CityInfoInnerDTO{" +
+                    "id=" + id +
+                    ", zipCode=" + zipCode +
+                    ", cityName='" + cityName + '\'' +
+                    '}';
         }
     }
 
