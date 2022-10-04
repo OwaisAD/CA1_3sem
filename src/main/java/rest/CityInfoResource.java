@@ -48,4 +48,11 @@ public class CityInfoResource {
         return Response.ok().entity(GSON.toJson(FACADE.getCityInfoById(id))).build();
     }
 
+    @GET
+    @Path("/name/{cityName}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getCityByName(@PathParam("cityName") String cityName) throws EntityNotFoundException {
+        return Response.ok().entity(GSON.toJson(FACADE.getCityInfoByName(cityName))).build();
+    }
+
 }

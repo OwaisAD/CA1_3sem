@@ -87,6 +87,23 @@ public class CityInfoFacade {
         }
     }
 
+    public CityInfoDTO getCityInfoByName(String cityName) throws EntityNotFoundException {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c from CityInfo c WHERE c.cityName= :cname", CityInfo.class);
+            query.setParameter("cname", cityName);
+            List<CityInfo> cityInfoList = query.getResultList();
+
+            if(cityInfoList.isEmpty())
+                throw new EntityNotFoundException("The entity CityInfo with name: " + cityName + " was not found");
+
+            return new CityInfoDTO(cityInfoList.get(0));
+        } finally {
+            em.close();
+        }
+    }
+
+
     /*
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();

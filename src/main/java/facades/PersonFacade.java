@@ -162,21 +162,18 @@ public class PersonFacade {
             // check if hobby doesn't exist in the person list
             boolean found = false;
             List<Hobby> hobbies = person.getHobbies();
-            for (Hobby hobby1 : hobbies) {
-                if(Objects.equals(hobby1.getId(), hobby.getId())) {
+            for (int i = 0; i < hobbies.size(); i++) {
+                if(hobbies.get(i).getId().intValue() == hobby.getId().intValue()) {
                     person.removeHobbies(hobby);
                     found = true;
+                    em.getTransaction().begin();
+                    em.merge(person);
+                    em.getTransaction().commit();
                 }
             }
             if(!found) {
                 throw new WebApplicationException(person.getFirstName() + " with ID " + personId + " did not have a hobby with ID: " + hobby.getId() + " and name " + hobby.getName());
             }
-
-            em.getTransaction().begin();
-
-            em.merge(person);
-
-            em.getTransaction().commit();
 
         } finally {
             em.close();
