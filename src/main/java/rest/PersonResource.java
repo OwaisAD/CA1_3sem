@@ -144,13 +144,18 @@ public class PersonResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response removeHobbyFromPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) throws EntityNotFoundException {
 
-        // Find the hobby
-        Hobby foundHobby = hobbyFacade.getHobbyById(hobbyId);
-        System.out.println("FOUND HOBBY");
-        System.out.println(foundHobby);
+        Hobby foundHobby;
+        Person person;
+
+        try {
+            foundHobby = hobbyFacade.getHobbyById(hobbyId);
+            person = FACADE.removeHobbyFromPerson(personId, foundHobby);
+        } catch (EntityNotFoundException exception) {
+            throw new EntityNotFoundException(exception.getMessage());
+        }
 
         // Add hobby to person
-        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.removeHobbyFromPerson(personId, foundHobby)))).build();
+        return Response.ok().entity(GSON.toJson(new PersonDTO(person))).build();
     }
 
 
