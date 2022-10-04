@@ -43,6 +43,12 @@ public class HobbyResource {
         return Response.ok().entity(GSON.toJson(new HobbyDTO(FACADE.getHobbyById(id)))).build();
     }
 
+    @GET
+    @Path("/name/{hobbyName}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getHobbyByName(@PathParam("hobbyName") String hobbyName) throws EntityNotFoundException {
+        return Response.ok().entity(GSON.toJson(new HobbyDTO(FACADE.getHobbyByName(hobbyName)))).build();
+    }
 
 
 }

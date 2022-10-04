@@ -172,8 +172,6 @@ public class PersonFacade {
                 throw new WebApplicationException(person.getFirstName() + " with ID " + personId + " did not have a hobby with ID: " + hobby.getId() + " and name " + hobby.getName());
             }
 
-
-
             em.getTransaction().begin();
 
             em.merge(person);
