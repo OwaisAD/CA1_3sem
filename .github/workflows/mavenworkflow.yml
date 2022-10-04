@@ -42,7 +42,7 @@ jobs:
           # mysql root password: ${{ secrets.RootPassword }} # Required if "mysql user" is empty, default is empty. The root superuser password
           mysql user: 'dev' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
           # mysql password: ${{ secrets.DatabasePassword }} # Required if "mysql user" exists. The password for the "mysql user"
-          mysql password: ${{ secrets.DATABASEPASSWORD }}
+          mysql password: 'ax2'
       - name: Cache Maven packages # cache maven repos to save time on future builds
         uses: actions/cache@v2
         with:
