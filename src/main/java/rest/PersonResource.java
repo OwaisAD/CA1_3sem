@@ -25,17 +25,11 @@ import java.util.regex.Pattern;
 public class PersonResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-       
     private static final PersonFacade FACADE =  PersonFacade.getPersonFacade(EMF);
-
     private static final AddressFacade addressFacade =  AddressFacade.getAddressFacade(EMF);
-
     private static final PhoneFacade phoneFacade =  PhoneFacade.getPhoneFacade(EMF);
-
     private static final CityInfoFacade cityInfoFacade =  CityInfoFacade.getCityInfoFacade(EMF);
-
     private static final HobbyFacade hobbyFacade =  HobbyFacade.getHobbyFacade(EMF);
-
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
@@ -100,9 +94,11 @@ public class PersonResource {
         }
 
         // get cityInfo
-        CityInfoDTO cityInfoDTO = cityInfoFacade.getCityByZipCode(personFromJson.getAddress().getCityInfo().getZipCode());
+        CityInfo cityInfo = cityInfoFacade.getCityByZipCode(personFromJson.getAddress().getCityInfo().getZipCode());
+
+        CityInfoDTO cityInfoDTO = new CityInfoDTO(cityInfo);
         System.out.println(cityInfoDTO);
-        personFromJson.getAddress().setCityInfo(new CityInfo(cityInfoDTO));
+        personFromJson.getAddress().setCityInfo(cityInfo);
 
         // create address
         AddressDTO a = addressFacade.create(new AddressDTO(personFromJson.getAddress()));

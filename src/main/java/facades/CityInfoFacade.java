@@ -65,13 +65,14 @@ public class CityInfoFacade {
 
 
     // method for returning a specific city by its zipcode
-    public CityInfoDTO getCityByZipCode(int zipCode) {
+    public CityInfo getCityByZipCode(int zipCode) {
         EntityManager em = getEntityManager();
         try {
             TypedQuery<CityInfo> query = em.createQuery("SELECT c from CityInfo c WHERE c.zipCode= :zipCode", CityInfo.class);
             query.setParameter("zipCode", zipCode);
             CityInfo cityInfo = query.getSingleResult();
-            return new CityInfoDTO(cityInfo);
+
+            return cityInfo;
         }finally {
             em.close();
         }
