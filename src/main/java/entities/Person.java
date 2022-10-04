@@ -152,4 +152,9 @@ public class Person {
     public void addHobbies(Hobby hobby) {
         this.hobbies.add(hobby);
     }
+
+    public void removeHobbies(Hobby hobby) {
+        this.hobbies.remove(hobby);
+    }
+
 }
