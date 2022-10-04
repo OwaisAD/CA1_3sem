@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import entities.CityInfo;
+import errorhandling.EntityNotFoundException;
 import facades.CityInfoFacade;
 import facades.HobbyFacade;
 import utils.EMF_Creator;
@@ -34,16 +35,16 @@ public class CityInfoResource {
 
 
     @GET
-    @Path("{zipcode}")
+    @Path("/zip/{zipcode}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getCityByZipCode(@PathParam("zipcode") int id) {
+    public Response getCityByZipCode(@PathParam("zipcode") int id) throws EntityNotFoundException {
         return Response.ok().entity(GSON.toJson(FACADE.getCityByZipCode(id))).build();
     }
 
     @GET
-    @Path("/id/{id}")
+    @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getCityById(@PathParam("id") int id) {
+    public Response getCityById(@PathParam("id") int id) throws EntityNotFoundException {
         return Response.ok().entity(GSON.toJson(FACADE.getCityInfoById(id))).build();
     }
 

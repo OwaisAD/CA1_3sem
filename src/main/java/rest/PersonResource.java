@@ -94,11 +94,10 @@ public class PersonResource {
         }
 
         // get cityInfo
-        CityInfo cityInfo = cityInfoFacade.getCityByZipCode(personFromJson.getAddress().getCityInfo().getZipCode());
+        CityInfoDTO cityInfoDTO = cityInfoFacade.getCityByZipCode(personFromJson.getAddress().getCityInfo().getZipCode());
 
-        CityInfoDTO cityInfoDTO = new CityInfoDTO(cityInfo);
         System.out.println(cityInfoDTO);
-        personFromJson.getAddress().setCityInfo(cityInfo);
+        personFromJson.getAddress().setCityInfo(new CityInfo(cityInfoDTO));
 
         // create address
         AddressDTO a = addressFacade.create(new AddressDTO(personFromJson.getAddress()));

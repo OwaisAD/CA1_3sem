@@ -107,8 +107,8 @@ public class CityInfoFacadeTest {
 
     @Test
     public void testGettingCityByZipCode() throws Exception {
-        CityInfo cityInfo = facade.getCityByZipCode(c1.getZipCode());
-        assertEquals("Kongens Lyngby", cityInfo.getCityName());
+        CityInfoDTO cityInfoDTO = facade.getCityByZipCode(c1.getZipCode());
+        assertEquals("Kongens Lyngby", cityInfoDTO.getCityName());
     }
 
 }
