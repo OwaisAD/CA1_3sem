@@ -1,9 +1,6 @@
 package entities;
 
 import dtos.AddressDTO;
-import facades.AddressFacade;
-import facades.PersonFacade;
-import utils.EMF_Creator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,7 +34,7 @@ public class Address {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CITYINFO_id", nullable = false)
-    private CityInfo cityinfo;
+    private CityInfo cityInfo;
 
     @OneToMany(mappedBy = "address")
     private Set<Person> people = new LinkedHashSet<>();
@@ -50,7 +47,14 @@ public class Address {
         this.street = addressDTO.getStreet();
         this.additionalInfo = addressDTO.getAdditionalInfo();
         this.isPrivate = addressDTO.isPrivate();
-        this.cityinfo = addressDTO.getCityInfo();
+        this.cityInfo = addressDTO.getCityInfo();
+    }
+
+    public Address(String street, String additionalInfo, boolean isPrivate, CityInfo cityInfo) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.isPrivate = isPrivate;
+        this.cityInfo = cityInfo;
     }
 
     public Integer getId() {
@@ -86,11 +90,11 @@ public class Address {
     }
 
     public CityInfo getCityInfo() {
-        return cityinfo;
+        return cityInfo;
     }
 
-    public void setCityInfo(CityInfo cityinfo) {
-        this.cityinfo = cityinfo;
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
     }
 
     public Set<Person> getPeople() {
@@ -102,7 +106,7 @@ public class Address {
     }
 
     public Integer getCityZip() {
-        return cityinfo.getZipCode();
+        return cityInfo.getZipCode();
     }
 
     @Override
@@ -125,7 +129,7 @@ public class Address {
                 ", street='" + street + '\'' +
                 ", additionalInfo='" + additionalInfo + '\'' +
                 ", isPrivate=" + isPrivate +
-                ", cityinfo=" + cityinfo +
+                ", cityInfo=" + cityInfo +
                 ", people=" + people +
                 '}';
     }

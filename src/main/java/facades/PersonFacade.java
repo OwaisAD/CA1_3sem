@@ -87,10 +87,6 @@ public class PersonFacade {
     public PersonDTO getPersonById(int id) throws EntityNotFoundException {
         EntityManager em = getEntityManager();
         try {
-            //Query query = em.createQuery("SELECT p FROM Person p WHERE p.id = :personid", Person.class);
-            //query.setParameter("personid", id);
-            //Person person = (Person) query.getSingleResult();
-
             Person person = em.find(Person.class,id);
 
             if(person == null) {
@@ -137,9 +133,7 @@ public class PersonFacade {
                 throw new EntityNotFoundException("The entity Person with ID: " + personId + " was not found");
 
             person.addHobbies(hobby);
-
             em.getTransaction().begin();
-
             em.merge(person);
 
             em.getTransaction().commit();
@@ -193,7 +187,7 @@ public class PersonFacade {
 
         EntityManager em = getEntityManager();
         try {
-            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityinfo.zipCode= :zip", Person.class);
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.zipCode= :zip", Person.class);
             query.setParameter("zip", zipCode);
             List<Person> persons = query.getResultList();
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.AddressDTO;
 import dtos.PersonDTO;
+import dtos.PhoneDTO;
 import entities.*;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -38,17 +39,8 @@ public class PersonResourceTest {
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
-//    private CityInfo c1;
-//
-//    private CityInfo c2;
-//
-//    private Phone phone1;
-//
-//    private Address a1;
-//
-//    private Hobby h1;
 
-   // private Person person;
+
 
     private CityInfo c1 = new CityInfo(2800, "Kongens Lyngby", new LinkedHashSet<>());
     private CityInfo c2 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
@@ -130,9 +122,6 @@ public class PersonResourceTest {
 
             em.persist(person);
             em.persist(person2);
-
-
-
             person.addHobbies(h1);
 
            // em.merge(person);
@@ -149,30 +138,29 @@ public class PersonResourceTest {
         given().when().get("/persons").then().statusCode(200);
     }
 
-//
-//    @Test
-//    public void testCreatingAPerson_Post() {
-//        //CityInfo c1 = new CityInfo(3000, "Helsingør", new LinkedHashSet<>());
-//        Phone phone3 = new Phone("55555555", "YouSee", false);
-//        Address a3 = new Address(new AddressDTO("Apple", "1st", false, c1));
-//        Person person = new Person("owais@mail.dk", "Owais", "Ceo", phone3, a3);
-//        String requestBody = GSON.toJson(person);
-//
-//        given()
-//                .header("Content-type", ContentType.JSON)
-//                .and()
-//                .body(requestBody)
-//                .when()
-//                .post("/persons")
-//                .then()
-//                .assertThat()
-//                .statusCode(200)
-//                .body("id", equalTo(3))
-//                .body("phone.number", equalTo("55555555"))
-//                .body("address.cityinfo.cityName", equalTo("Kongens Lyngby"));
-//    }
 
+    @Test
+    public void testCreatingAPerson_Post() {
+        Phone phone = new Phone("55555555", "YouSee", false);
+        Address address = new Address("Apple", "1st", false, c1);
+        PersonDTO.AddressInnerDTO addressInnerDTO = new PersonDTO.AddressInnerDTO(address);
+        PersonDTO personDTO = new PersonDTO("owais@mail.dk", "Owais", "Ceo", phone, addressInnerDTO);
+        System.out.println("**************              ************");
+        String requestBody = GSON.toJson(personDTO);
+        System.out.println(requestBody);
 
+        given()
+                .header("Content-type", ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .post("/persons")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("phone.number", equalTo("55555555"))
+                .body("address.cityInfo.cityName", equalTo("Kongens Lyngby"));
+    }
 
     @Test
     public void testGetPersonById()  {
@@ -185,27 +173,43 @@ public class PersonResourceTest {
                 .body("id", equalTo(person.getId()))
                 .body("firstName", equalTo(person.getFirstName()))
                 .body("phone.description", equalTo("Telenor"))
-                .body("address.cityName", equalTo("Kongens Lyngby"))
+                .body("address.cityInfo.cityName", equalTo("Kongens Lyngby"))
                 .body("hobbies.name", hasItems("3D-udskrivning"));
     }
 
     // testing response when trying to get a person with a non-existing id
-//    @Test
-//
-//
-//
-//
-//    public void testGetPersonByWrongId()  {
-//        given()
-//                .contentType(ContentType.JSON)
-//                .get("/persons/{id}", 9999999)
-//                .then()
-//                .assertThat()
-//                //.statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
-//                //.body("code", equalTo(404))
-//                .body("message", equalTo("The entity Person with ID: 9999999 was not found"));
-//    }
+    @Test
+    public void testGetPersonByWrongId()  {
+        given()
+                .contentType(ContentType.JSON)
+                .get("/persons/{id}", 9999999)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("code", equalTo(404))
+                .body("message", equalTo("The entity Person with ID: 9999999 was not found"));
+    }
 
+    @Test
+    public void testAddHobbyToPersonWhenHobbyNotExist() {
+        given()
+                .contentType(ContentType.JSON)
+                .post("{personId}/addhobby/{hobbyId}",1,60000)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("code",equalTo(404));
+    }
 
+    @Test
+    public void testAddHobbyToPersonWhoDoesNotExist() {
+        given()
+                .contentType(ContentType.JSON)
+                .post("{personId}/addhobby/{hobbyId}",1000000,6)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND_404.getStatusCode())
+                .body("code",equalTo(404));
+    }
 
 }

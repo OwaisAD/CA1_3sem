@@ -81,7 +81,10 @@ public class PersonResource {
         if(personFromJson.getAddress().getStreet() == null) {
             errorMsg += "Street was not parsed. ";
         }
-        int zipCode = personFromJson.getAddress().getCityInfo().getZipCode();
+        int zipCode = personFromJson
+                .getAddress()
+                .getCityInfo()
+                .getZipCode();
         String VALID_ZIPCODE_REGEX = "^[0-9]{3,4}$"; // this here can be made to check if the zipcode given is a correct danish zipcode
         String zipCodeToStr = String.valueOf(zipCode);
         boolean checkZipCode = zipCodeToStr.matches(VALID_ZIPCODE_REGEX);
@@ -106,12 +109,13 @@ public class PersonResource {
 
         // create phone
         Phone phone = phoneFacade.createPhone(personFromJson.getPhone());
-        System.out.println(phone);
         personFromJson.setPhone(phone);
 
         // create the person
         Person pNew = FACADE.createPerson(personFromJson);
-        return Response.ok().entity(GSON.toJson(pNew)).build();
+        PersonDTO personDTO = new PersonDTO(pNew);
+        String result = GSON.toJson(personDTO);
+        return Response.ok().entity(result).build();
     }
 
     @GET
@@ -120,13 +124,18 @@ public class PersonResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response addHobbyToPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) throws EntityNotFoundException {
 
-        // Find the hobby
-        Hobby foundHobby = hobbyFacade.getHobbyById(hobbyId);
-        System.out.println("FOUND HOBBY");
-        System.out.println(foundHobby);
+        Hobby foundHobby;
+        Person person;
+        try {
+            foundHobby = hobbyFacade.getHobbyById(hobbyId);
+            person = FACADE.addHobbyToPerson(personId, foundHobby);
+
+        } catch (EntityNotFoundException exception) {
+            throw new NotFoundException(exception.getMessage());
+        }
 
         // Add hobby to person
-        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.addHobbyToPerson(personId, foundHobby)))).build();
+        return Response.ok().entity(GSON.toJson(new PersonDTO(person))).build();
     }
 
     @GET
@@ -148,8 +157,14 @@ public class PersonResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonById(@PathParam("id") int id) throws EntityNotFoundException {
-        return Response.ok().entity(GSON.toJson(FACADE.getPersonById(id))).build();
+    public Response getPersonById(@PathParam("id") int id) throws NotFoundException {
+        PersonDTO personDTO;
+        try {
+            personDTO = FACADE.getPersonById(id);
+        } catch (EntityNotFoundException exception) {
+            throw new NotFoundException(exception.getMessage());
+        }
+        return Response.ok().entity(GSON.toJson(personDTO)).build();
     }
 
     @GET

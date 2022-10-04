@@ -24,7 +24,9 @@ public class PersonDTO implements Serializable {
     private final String lastName;
 
     private Phone phone;
+    private PhoneDTO phoneDTO;
 
+    private AddressDTO addressDTO;
     private AddressInnerDTO address;
 
     //private List<AddressInnerDTO> addresses = new ArrayList<>();
@@ -44,8 +46,8 @@ public class PersonDTO implements Serializable {
         this.lastName = lastName;
     }
 
-    public PersonDTO(Integer id, String email, String firstName, String lastName, Phone phone, AddressInnerDTO address) {
-        this.id = id;
+
+    public PersonDTO( String email, String firstName, String lastName, Phone phone, AddressInnerDTO address) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,16 +66,11 @@ public class PersonDTO implements Serializable {
 
         this.address = new AddressInnerDTO(person.getAddress());
 
-
-
-        /*person.getAddress().getPeople().forEach(p -> {
-            addresses.add(new AddressInnerDTO(p.getAddress()));
-        });*/
-
         person.getHobbies().forEach(hobby -> {
             hobbies.add(new HobbyInnerDTO(hobby));
         });
     }
+
 
     public static List<PersonDTO> getDtos(List<Person> persons) {
         List<PersonDTO> personDTOS = new ArrayList<>();
@@ -200,6 +197,8 @@ public class PersonDTO implements Serializable {
         private String additionalInfo = "";
         private boolean isPrivate;
 
+        public CityInfoInnerDTO cityInfo;
+
         private int zipCode;
         private String cityName;
 
@@ -208,8 +207,7 @@ public class PersonDTO implements Serializable {
             this.street = address.getStreet();
             this.additionalInfo = address.getAdditionalInfo();
             this.isPrivate = address.getIsPrivate();
-            this.zipCode = address.getCityInfo().getZipCode();
-            this.cityName = address.getCityInfo().getCityName();
+            this.cityInfo = new CityInfoInnerDTO(address.getCityInfo().getZipCode(),address.getCityInfo().getCityName());
         }
 
         public Integer getId() {
@@ -244,6 +242,44 @@ public class PersonDTO implements Serializable {
                     ", additionalInfo='" + additionalInfo + '\'' +
                     ", isPrivate=" + isPrivate +
                     '}';
+        }
+
+
+        public static class CityInfoInnerDTO implements Serializable {
+            private Integer id;
+            private Integer zipCode;
+            private String cityName;
+
+            public CityInfoInnerDTO(Integer id, Integer zipCode, String cityName) {
+                this.id = id;
+                this.zipCode = zipCode;
+                this.cityName = cityName;
+            }
+
+            public CityInfoInnerDTO(Integer zipCode, String cityName){
+                this.zipCode = zipCode;
+                this.cityName = cityName;
+            }
+
+            public Integer getId() {
+                return id;
+            }
+
+            public Integer getZipCode() {
+                return zipCode;
+            }
+
+            public String getCityName() {
+                return cityName;
+            }
+
+            @Override
+            public String toString() {
+                return getClass().getSimpleName() + "(" +
+                        "id = " + id + ", " +
+                        "zipCode = " + zipCode + ", " +
+                        "cityName = " + cityName + ")";
+            }
         }
     }
 

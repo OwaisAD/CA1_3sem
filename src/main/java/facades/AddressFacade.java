@@ -72,8 +72,8 @@ public class AddressFacade {
 
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<Address> query = em.createQuery("select a from Address a join a.cityinfo ac where ac.id= :cityinfoid", Address.class);
-            query.setParameter("cityinfoid", cityInfoId);
+            TypedQuery<Address> query = em.createQuery("select a from Address a join a.cityInfo ac where ac.id= :cityInfoId", Address.class);
+            query.setParameter("cityInfoId", cityInfoId);
             List<Address> addressList = query.getResultList();
             return AddressDTO.getDTOs(addressList);
         } finally {

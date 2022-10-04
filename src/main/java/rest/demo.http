@@ -13,20 +13,20 @@ POST http://localhost:8080/ca1/api/persons
 Content-Type: application/json
 
 {
-  "email": "owais3@mail.com",
+  "email": "owais8@mail.com",
   "firstName": "Owais",
-  "lastName": "D",
+  "lastName": "Dut",
   "phone": {
-    "number": "50505050",
+    "number": "50505053",
     "description": "Telmore",
     "isPrivate": false
   },
   "address": {
-    "street": "Sushi Blv",
-    "additionalInfo": "2th",
+    "street": "Lego Blv",
+    "additionalInfo": "3th",
     "isPrivate": false,
-    "cityinfo": {
-      "zipCode": 3000
+    "cityInfo": {
+      "zipCode": 2800
     }
   }
 }
@@ -36,7 +36,7 @@ POST http://localhost:8080/ca1/api/persons/3/hobby/8
 Content-Type: application/json
 
 ###
-PUT http://localhost:8080/ca1/api/persons/9
+PUT http://localhost:8080/ca1/api/persons/8
 Content-Type: application/json
 
 {"email": "elon@gmail.gov",
