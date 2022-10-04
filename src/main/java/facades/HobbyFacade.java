@@ -92,6 +92,22 @@ public class HobbyFacade {
         return hobby;
     }
 
+    public Hobby getHobbyByName(String hobbyName) throws EntityNotFoundException {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hname", Hobby.class);
+            query.setParameter("hname", hobbyName);
+            List<Hobby> hobbyList = query.getResultList();
+
+            if(hobbyList.size() == 0) {
+                throw new EntityNotFoundException("The entity Hobby with name: " + hobbyName + " was not found");
+            }
+
+            return hobbyList.get(0);
+        } finally {
+            em.close();
+        }
+    }
 
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
@@ -99,5 +115,6 @@ public class HobbyFacade {
         //System.out.println(hf.getAllHobbies());
 
     }
+
 
 }

@@ -2,10 +2,12 @@ package facades;
 
 import dtos.CityInfoDTO;
 import entities.CityInfo;
+import errorhandling.EntityNotFoundException;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -52,10 +54,14 @@ public class CityInfoFacade {
 
 
 
-    public CityInfoDTO getCityInfoById(int id) {
+    public CityInfoDTO getCityInfoById(int id) throws EntityNotFoundException {
         EntityManager em = getEntityManager();
         try {
             CityInfo city = em.find(CityInfo.class, id);
+
+            if(city == null)
+                throw new EntityNotFoundException("The entity CityInfo with ID: " + id + " was not found");
+
             return new CityInfoDTO(city);
         }finally {
             em.close();
@@ -65,18 +71,38 @@ public class CityInfoFacade {
 
 
     // method for returning a specific city by its zipcode
-    public CityInfo getCityByZipCode(int zipCode) {
+    public CityInfoDTO getCityByZipCode(int zipCode) throws EntityNotFoundException {
         EntityManager em = getEntityManager();
         try {
             TypedQuery<CityInfo> query = em.createQuery("SELECT c from CityInfo c WHERE c.zipCode= :zipCode", CityInfo.class);
             query.setParameter("zipCode", zipCode);
-            CityInfo cityInfo = query.getSingleResult();
+            List<CityInfo> cityInfoList = query.getResultList();
 
-            return cityInfo;
-        }finally {
+            if(cityInfoList.isEmpty())
+                throw new EntityNotFoundException("The entity CityInfo with zipcode: " + zipCode + " was not found");
+
+            return new CityInfoDTO(cityInfoList.get(0));
+        } finally {
             em.close();
         }
     }
+
+    public CityInfoDTO getCityInfoByName(String cityName) throws EntityNotFoundException {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c from CityInfo c WHERE c.cityName= :cname", CityInfo.class);
+            query.setParameter("cname", cityName);
+            List<CityInfo> cityInfoList = query.getResultList();
+
+            if(cityInfoList.isEmpty())
+                throw new EntityNotFoundException("The entity CityInfo with name: " + cityName + " was not found");
+
+            return new CityInfoDTO(cityInfoList.get(0));
+        } finally {
+            em.close();
+        }
+    }
+
 
     /*
     public static void main(String[] args) {

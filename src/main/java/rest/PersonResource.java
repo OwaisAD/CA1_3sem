@@ -94,11 +94,10 @@ public class PersonResource {
         }
 
         // get cityInfo
-        CityInfo cityInfo = cityInfoFacade.getCityByZipCode(personFromJson.getAddress().getCityInfo().getZipCode());
+        CityInfoDTO cityInfoDTO = cityInfoFacade.getCityByZipCode(personFromJson.getAddress().getCityInfo().getZipCode());
 
-        CityInfoDTO cityInfoDTO = new CityInfoDTO(cityInfo);
         System.out.println(cityInfoDTO);
-        personFromJson.getAddress().setCityInfo(cityInfo);
+        personFromJson.getAddress().setCityInfo(new CityInfo(cityInfoDTO));
 
         // create address
         AddressDTO a = addressFacade.create(new AddressDTO(personFromJson.getAddress()));
@@ -131,6 +130,22 @@ public class PersonResource {
     }
 
     @GET
+    @Path("{personId}/removehobby/{hobbyId}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response removeHobbyFromPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) throws EntityNotFoundException {
+
+        // Find the hobby
+        Hobby foundHobby = hobbyFacade.getHobbyById(hobbyId);
+        System.out.println("FOUND HOBBY");
+        System.out.println(foundHobby);
+
+        // Add hobby to person
+        return Response.ok().entity(GSON.toJson(new PersonDTO(FACADE.removeHobbyFromPerson(personId, foundHobby)))).build();
+    }
+
+
+    @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getPersonById(@PathParam("id") int id) throws EntityNotFoundException {
@@ -147,7 +162,7 @@ public class PersonResource {
     @GET
     @Path("/city/{zipCode}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAllPersons(@PathParam("zipCode") int zipCode) {
+    public Response getAllPersonsGivenAZipcode(@PathParam("zipCode") int zipCode) {
         return Response.ok().entity(GSON.toJson(FACADE.getAllPersonsGivenAZipCode(zipCode))).build();
     }
 

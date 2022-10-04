@@ -11,6 +11,7 @@ import utils.EMF_Creator;
 import javax.persistence.*;
 import javax.ws.rs.WebApplicationException;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -148,6 +149,38 @@ public class PersonFacade {
         }
         return person;
     }
+
+    public Person removeHobbyFromPerson(int personId, Hobby hobby) throws EntityNotFoundException{
+        EntityManager em = getEntityManager();
+        Person person = null;
+        try {
+            person = em.find(Person.class, personId);
+
+            if(person == null)
+                throw new EntityNotFoundException("The entity Person with ID: " + personId + " was not found");
+
+            // check if hobby doesn't exist in the person list
+            boolean found = false;
+            List<Hobby> hobbies = person.getHobbies();
+            for (int i = 0; i < hobbies.size(); i++) {
+                if(hobbies.get(i).getId().intValue() == hobby.getId().intValue()) {
+                    person.removeHobbies(hobby);
+                    found = true;
+                    em.getTransaction().begin();
+                    em.merge(person);
+                    em.getTransaction().commit();
+                }
+            }
+            if(!found) {
+                throw new WebApplicationException(person.getFirstName() + " with ID " + personId + " did not have a hobby with ID: " + hobby.getId() + " and name " + hobby.getName());
+            }
+
+        } finally {
+            em.close();
+        }
+        return person;
+    }
+
 
     public List<PersonDTO> getAllPersonsGivenAZipCode(int zipCode) {
         // check number formatting
