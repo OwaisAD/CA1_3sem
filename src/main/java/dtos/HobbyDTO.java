@@ -56,7 +56,7 @@ public class HobbyDTO implements Serializable {
         this.type = hobby.getType();
         this.description = hobby.getDescription();
 
-        for (Person person : hobby.getPeople()) {
+        hobby.getPeople().forEach(person -> {
             PersonInnerDTO personInnerDTO = new PersonInnerDTO(
                     person.getId(),
                     person.getEmail(),
@@ -65,7 +65,7 @@ public class HobbyDTO implements Serializable {
             );
 
             people.add(personInnerDTO);
-        }
+        });
     }
 
     public static List<HobbyDTO> getDTOs(List<Hobby> hobbies) {
