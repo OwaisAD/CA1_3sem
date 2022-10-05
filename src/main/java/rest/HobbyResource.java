@@ -49,6 +49,4 @@ public class HobbyResource {
     public Response getHobbyByName(@PathParam("hobbyName") String hobbyName) throws EntityNotFoundException {
         return Response.ok().entity(GSON.toJson(new HobbyDTO(FACADE.getHobbyByName(hobbyName)))).build();
     }
-
-
 }

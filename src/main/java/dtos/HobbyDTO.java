@@ -1,6 +1,7 @@
 package dtos;
 
 import entities.Hobby;
+import entities.Person;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -54,6 +55,17 @@ public class HobbyDTO implements Serializable {
         this.category = hobby.getCategory();
         this.type = hobby.getType();
         this.description = hobby.getDescription();
+
+        for (Person person : hobby.getPeople()) {
+            PersonInnerDTO personInnerDTO = new PersonInnerDTO(
+                    person.getId(),
+                    person.getEmail(),
+                    person.getFirstName(),
+                    person.getLastName()
+            );
+
+            people.add(personInnerDTO);
+        }
     }
 
     public static List<HobbyDTO> getDTOs(List<Hobby> hobbies) {

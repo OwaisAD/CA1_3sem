@@ -120,7 +120,6 @@ public class PersonResource {
 
     @GET
     @Path("{personId}/addhobby/{hobbyId}")
-    @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response addHobbyToPerson(@PathParam("personId") int personId, @PathParam("hobbyId") int hobbyId) throws EntityNotFoundException {
 

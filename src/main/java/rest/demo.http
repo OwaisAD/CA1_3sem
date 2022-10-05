@@ -1,6 +1,10 @@
 GET http://localhost:8080/ca1/api/cities
 
 ###
+GET http://localhost:8080/ca1/api/hobbies/454
+Content-Type: application/json
+
+###
 POST http://localhost:8080/devops_starter_war_exploded/api/xxx
 Content-Type: application/json
 #User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
@@ -13,7 +17,7 @@ POST http://localhost:8080/ca1/api/persons
 Content-Type: application/json
 
 {
-  "email": "owais8@mail.com",
+  "email": "owais11@mail.com",
   "firstName": "Owais",
   "lastName": "Dut",
   "phone": {
@@ -32,11 +36,11 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8080/ca1/api/persons/3/hobby/8
+GET http://localhost:8080/ca1/api/persons/6/addhobby/454
 Content-Type: application/json
 
 ###
-PUT http://localhost:8080/ca1/api/persons/8
+PUT http://localhost:8080/ca1/api/persons/5
 Content-Type: application/json
 
 {"email": "elon@gmail.gov",
@@ -44,4 +48,4 @@ Content-Type: application/json
 "lastName":  "Musk"}
 
 ###
-DELETE http://localhost:8080/ca1/api/persons/9
+DELETE http://localhost:8080/ca1/api/persons/21

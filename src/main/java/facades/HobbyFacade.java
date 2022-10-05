@@ -71,6 +71,7 @@ public class HobbyFacade {
             Hobby hobby = em.find(Hobby.class, id);
             if(hobby == null)
                 throw new EntityNotFoundException("Entity for Hobby with ID: " + id + " was not found");
+
             return hobby;
         } finally {
             em.close();
