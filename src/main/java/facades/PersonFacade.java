@@ -132,6 +132,10 @@ public class PersonFacade {
             if(person == null)
                 throw new EntityNotFoundException("The entity Person with ID: " + personId + " was not found");
 
+            if(person.getHobbies().contains(hobby)) {
+                throw new WebApplicationException("Person is already apart of hobby with name: " + hobby.getName());
+            }
+
             person.addHobbies(hobby);
             em.getTransaction().begin();
             em.merge(person);
