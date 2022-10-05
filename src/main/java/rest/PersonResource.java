@@ -103,13 +103,13 @@ public class PersonResource {
         personFromJson.getAddress().setCityInfo(new CityInfo(cityInfoDTO));
 
         // create address
-        AddressDTO a = addressFacade.create(new AddressDTO(personFromJson.getAddress()));
-        System.out.println(a);
-        personFromJson.setAddress(new Address(a));
+//        AddressDTO a = addressFacade.create(new AddressDTO(personFromJson.getAddress()));
+//        System.out.println(a);
+//        personFromJson.setAddress(new Address(a));
 
         // create phone
-        Phone phone = phoneFacade.createPhone(personFromJson.getPhone());
-        personFromJson.setPhone(phone);
+//        Phone phone = phoneFacade.createPhone(personFromJson.getPhone());
+//        personFromJson.setPhone(phone);
 
         // create the person
         Person pNew = FACADE.createPerson(personFromJson);
