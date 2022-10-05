@@ -175,14 +175,7 @@ public class PersonResource {
     @Path("/phone/{phoneNumber}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getPersonByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) throws EntityNotFoundException {
-        return Response.ok().entity(GSON.toJson(FACADE.getPersonByPhoneNumber(phoneNumber)))
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Headers",
-                        "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Methods",
-                        "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .build();
+        return Response.ok().entity(GSON.toJson(FACADE.getPersonByPhoneNumber(phoneNumber))).build();
     }
 
     @GET
