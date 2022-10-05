@@ -34,6 +34,17 @@ public class CityInfoDTO implements Serializable {
         }
         this.zipCode = cityInfo.getZipCode();
         this.cityName = cityInfo.getCityName();
+
+        cityInfo.getAddresses().forEach(address -> {
+            AddressDto addressDto = new AddressDto(
+                    address.getId(),
+                    address.getStreet(),
+                    address.getAdditionalInfo(),
+                    address.getIsPrivate()
+            );
+
+            addresses.add(addressDto);
+        });
     }
 
     public static List<CityInfoDTO> getDTOs(List<CityInfo> cityInfoList) {

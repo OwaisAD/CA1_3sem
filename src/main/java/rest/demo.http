@@ -1,8 +1,15 @@
 GET http://localhost:8080/ca1/api/cities
 
 ###
+GET http://localhost:8080/ca1/api/cities/zip/2800
+
+###
+GET http://localhost:8080/ca1/api/cities/
+
+###
 GET http://localhost:8080/ca1/api/hobbies/454
 Content-Type: application/json
+
 
 ###
 POST http://localhost:8080/devops_starter_war_exploded/api/xxx
