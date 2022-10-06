@@ -123,9 +123,4 @@ public class PersonFacadeTest {
         assertDoesNotThrow(() -> hobbyFacade.getHobbyById(setUpTest.getHobby2().getId()));
     }
 
-    @Test
-    public void testEditPersonById() {
-        Person person = facade.editPersonById(setUpTest.getPerson().getId(),"anders@gmail.com","Anders","Fritzbøger");
-        assertNotEquals("Thomas",person.getFirstName());
-    }
 }
