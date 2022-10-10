@@ -37,7 +37,7 @@ Content-Type: application/json
     "additionalInfo": "3th",
     "isPrivate": false,
     "cityInfo": {
-      "zipCode": 2800
+      "zipCode": 3000
     }
   }
 }
