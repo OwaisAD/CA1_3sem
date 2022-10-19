@@ -1,6 +1,9 @@
 # Course Assignment 1 - 3rd semester
 ---
 
+## Tjek siden ud [her](https://thekazestudios.com/)
+
+
 ## Projektet er udført af:
 - [Andreas Fritzbøger](https://github.com/Wolfgang1235)
 - [Daniel Drobek](https://github.com/DanielD99)
