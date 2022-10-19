@@ -1,7 +1,7 @@
 # Course Assignment 1 - 3rd semester
 ---
 
-## Tjek siden ud [her](https://thekazestudios.com/)
+## Tjek brugen af APIen ud [her](https://thekazestudios.com/)
 
 
 ## Projektet er udført af:
